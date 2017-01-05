@@ -60,6 +60,21 @@ class Task(Thing):
         self.priority, self.urgent)
         return t_all
 
+def from_tuple(tup):
+    '''turn tuple to task'''
+    newtask = Task(tup[1], tup[2])
+    newtask.tasklistname = tup[3]
+    newtask.task_type = tup[4]
+    newtask.week = tup[5]
+    newtask.already_time = tup[6]
+    newtask.expected_time = tup[7]
+    newtask.finished = tup[8]
+    newtask.repeat_day = tup[9]
+    newtask.addtime = tup[10]
+    newtask.priority = tup[11]
+    newtask.urgent = tup[12]
+    return newtask
+
 if __name__ == "__main__":
     A = Task("my first task", "2016-12-31")
     A.print_simple_summary()

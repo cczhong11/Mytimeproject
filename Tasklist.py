@@ -1,7 +1,7 @@
 '''for tasklists'''
 import sqlite3
 import datetime
-from Task import Task
+from Task import *
 
 
 class Tasklist(object):
@@ -12,6 +12,7 @@ class Tasklist(object):
         self.hadsync = False
         self.conn = sqlite3.connect('tasks.sqlite')
         self.create_table_sql()
+        self.today = []
 
     def new_task(self):
         '''add tasks to tasklists'''
@@ -33,10 +34,10 @@ class Tasklist(object):
         result = int(cu0.fetchone()[0])
         cu0.close()
         return result+1
-    
+
     def add_task(self, task):
         '''add task to sqlite'''
-        newt = task.get_all()     
+        newt = task.get_all()
         cu0 =  self.conn.cursor()
         result = (self.find_max_id(0, "task_id"),)
         save_sql = "INSERT INTO "+self.name+ " values (?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)"
@@ -44,8 +45,8 @@ class Tasklist(object):
         cu0.execute(save_sql, result)
         self.conn.commit()
         cu0.close()
-    
-    
+
+
 
     def create_table_sql(self):
         '''create sql table'''
@@ -102,7 +103,7 @@ class Tasklist(object):
         result = cu0.fetchone()
         return result
 
-    def done_task(self, task):
+    def done_task(self, task, addtime=1):
         '''add done log to log and add time to already'''
         data = self.fetch_task_id(task)
         data = data+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
@@ -112,17 +113,43 @@ class Tasklist(object):
         save_sql = "INSERT INTO log_"+self.name+ " values (?, ?, ?, ?, ?)"
         cu0.execute(save_sql, data)
         self.conn.commit()
+        task.add_hours(addtime)
+        update_sql = "UPDATE "+self.name+" SET already_time = ? WHERE task_id = ?"
+        cu0.execute(update_sql, (task.already_time, data[0]))
         cu0.close()
+
 
     def print_today(self):
         '''print all item should be done today'''
-
-
+        sql = "Select * from "+self.name+" where finished is 0"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()
+        i = 0
+        for task in result:
+            task = from_tuple(task)
+            day = (task.deadline - datetime.datetime.now()).days
+            if (task.deadline - datetime.datetime.today()).days < 1:
+                self.today.append(task)
+                print("%d:%s" % (i, task.get_name()))
+                i += 1
+            elif day%task.repeat_day == 0:
+                self.today.append(task)
+                print("%d:%s" % (i, task.get_name()))
+                i += 1
 
 if __name__ == "__main__":
     A = Tasklist("test")
-    while(1):
-        AT = A.new_task()
-        A.add_task(AT)
-        A.done_task(AT)
+    while 1:
+        print(" 0: add tasks\n 1:done task \n 2: print all task")
+        Key = input("your choice:")
+        if int(Key) == 0:
+            AT = A.new_task()
+            A.add_task(AT)
+            print("this task add successfully")
+        elif int(Key) == 1:
+            A.print_today()
+            Index = input("choose task to be done: ")
+            Time = input("how much time you spent in the task: ")
+            A.done_task(A.today[int(Index)], int(Time))
         
