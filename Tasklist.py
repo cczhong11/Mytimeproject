@@ -97,7 +97,7 @@ class Tasklist(object):
 
     def fetch_task_id(self, task):
         '''get task_id'''
-        sql = "SELECT task_id from "+self.name+" where name is "+task.get_name()+" AND finished is 0"
+        sql = "SELECT task_id from "+self.name+" WHERE name = '"+task.get_name()+"' AND finished = 0"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchone()
@@ -105,8 +105,8 @@ class Tasklist(object):
 
     def done_task(self, task, addtime=1):
         '''add done log to log and add time to already'''
-        data = self.fetch_task_id(task)
-        data = data+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
+        data0 = self.fetch_task_id(task)
+        data = data0+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
         datetime.datetime.now().strftime("%Y-%m-%d"))
         data = (self.find_max_id(1, "id"), )+data
         cu0 = self.conn.cursor()
@@ -115,13 +115,14 @@ class Tasklist(object):
         self.conn.commit()
         task.add_hours(addtime)
         update_sql = "UPDATE "+self.name+" SET already_time = ? WHERE task_id = ?"
-        cu0.execute(update_sql, (task.already_time, data[0]))
+        cu0.execute(update_sql, (task.already_time, data0[0]))
+        self.conn.commit()
         cu0.close()
 
 
     def print_today(self):
         '''print all item should be done today'''
-        sql = "Select * from "+self.name+" where finished is 0"
+        sql = "Select * from "+self.name+" where finished = 0"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
