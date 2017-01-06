@@ -13,6 +13,7 @@ class Tasklist(object):
         self.conn = sqlite3.connect('tasks.sqlite')
         self.create_table_sql()
         self.today = []
+        self.all_task = []
 
     def new_task(self):
         '''add tasks to tasklists'''
@@ -140,9 +141,11 @@ class Tasklist(object):
         cu0.execute(sql)
         result = cu0.fetchall()
         i = 0
+        self.all_task.clear()
         print("---------------------------")
         for task in result:
             task = from_tuple(task)
+            self.all_task.append(task)
             print("%d:%s \t %s" % (i, task.get_name(),task.deadline.strftime("%Y-%m-%d")))
             i += 1
         print("---------------------------")
@@ -155,6 +158,7 @@ class Tasklist(object):
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
+        self.today.clear()
         i = 0
         print("---------------------------")
         for task in result:
@@ -192,4 +196,11 @@ if __name__ == "__main__":
 
         elif int(Key) == 2:
             A.print_all()
-
+            Index = input("choose task to be done: ")
+            if Index == 'q':
+                continue
+            Time = input("how much time you spent in the task and did you finished(0 or 1): ")
+            T = Time.split()
+            A.done_task(A.all_task[int(Index)], int(T[0]))
+            if int(T[1]) == 1:
+                A.update_finished(A.all_task[int(Index)])
