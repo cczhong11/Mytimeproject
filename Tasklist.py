@@ -22,16 +22,19 @@ class Tasklist(object):
         newtask.ask_details()
         newtask.print_simple_summary()
         return newtask
-    
-    def find_max_id(self, tol, id):
+
+    def find_max_id(self, tol, tid):
         '''get max id in two different table'''
         cu0 = self.conn.cursor()
         if tol == 0:
-            find_max_index = "SELECT MAX("+id+") FROM "+self.name
+            find_max_index = "SELECT MAX("+tid+") FROM "+self.name
         else :
-            find_max_index = "SELECT MAX("+id+") FROM log_"+self.name
-        cu0.execute(find_max_index)
-        result = int(cu0.fetchone()[0])
+            find_max_index = "SELECT MAX("+tid+") FROM log_"+self.name
+        try:
+            cu0.execute(find_max_index)
+            result = int(cu0.fetchone()[0])
+        except:
+            result = -1
         cu0.close()
         return result+1
 
@@ -70,7 +73,8 @@ class Tasklist(object):
                           'task_id' int(11) NOT NULL,\
                           `name` varchar(20) NOT NULL,\
                           `deadline` varchar(20) DEFAULT NULL,\
-                          `donetime` varchar(20) DEFAULT NULL,\
+                          `done_time` varchar(20) DEFAULT NULL,\
+                          `done_week` int(5) DEFAULT 0,\
                             PRIMARY KEY (`id`))"
         cu = self.conn.cursor()
         cu.execute(create_table_sql)
@@ -108,9 +112,9 @@ class Tasklist(object):
         data0 = self.fetch_task_id(task)
         data = data0+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
         datetime.datetime.now().strftime("%Y-%m-%d"))
-        data = (self.find_max_id(1, "id"), )+data
+        data = (self.find_max_id(1, "id"), )+data+(datetime.datetime.now().isocalendar()[1],)
         cu0 = self.conn.cursor()
-        save_sql = "INSERT INTO log_"+self.name+ " values (?, ?, ?, ?, ?)"
+        save_sql = "INSERT INTO log_"+self.name+ " values (?, ?, ?, ?, ?, ?)"
         cu0.execute(save_sql, data)
         self.conn.commit()
         task.add_hours(addtime)
@@ -120,13 +124,39 @@ class Tasklist(object):
         cu0.close()
 
 
-    def print_today(self):
-        '''print all item should be done today'''
-        sql = "Select * from "+self.name+" where finished = 0"
+    def update_finished(self, task):
+        '''update finished in table'''
+        data0 = self.fetch_task_id(task)
+        update_sql = "UPDATE "+self.name+" SET finished = ? WHERE task_id = ?"
+        cu0 = self.conn.cursor()
+        cu0.execute(update_sql, (1, data0[0]))
+        self.conn.commit()
+        cu0.close()
+
+    def print_all(self):
+        '''print all tasks'''
+        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
         i = 0
+        print("---------------------------")
+        for task in result:
+            task = from_tuple(task)
+            print("%d:%s \t %s" % (i, task.get_name(),task.deadline.strftime("%Y-%m-%d")))
+            i += 1
+        print("---------------------------")
+
+
+
+    def print_today(self):
+        '''print all item should be done today'''
+        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()
+        i = 0
+        print("---------------------------")
         for task in result:
             task = from_tuple(task)
             day = (task.deadline - datetime.datetime.now()).days
@@ -138,11 +168,12 @@ class Tasklist(object):
                 self.today.append(task)
                 print("%d:%s" % (i, task.get_name()))
                 i += 1
+        print("---------------------------")
 
 if __name__ == "__main__":
-    A = Tasklist("test")
+    A = Tasklist("winter_holiday")
     while 1:
-        print(" 0: add tasks\n 1:done task \n 2: print all task")
+        print(" 0: add tasks\n 1: done task \n 2: print all task")
         Key = input("your choice:")
         if int(Key) == 0:
             AT = A.new_task()
@@ -151,6 +182,14 @@ if __name__ == "__main__":
         elif int(Key) == 1:
             A.print_today()
             Index = input("choose task to be done: ")
-            Time = input("how much time you spent in the task: ")
-            A.done_task(A.today[int(Index)], int(Time))
-        
+            if Index == 'q':
+                continue
+            Time = input("how much time you spent in the task and did you finished(0 or 1): ")
+            T = Time.split()
+            A.done_task(A.today[int(Index)], int(T[0]))
+            if int(T[1]) == 1:
+                A.update_finished(A.today[int(Index)])
+
+        elif int(Key) == 2:
+            A.print_all()
+
