@@ -149,6 +149,7 @@ class Tasklist(object):
             print("%d:%s \t %s" % (i, task.get_name(),task.deadline.strftime("%Y-%m-%d")))
             i += 1
         print("---------------------------")
+        cu0.close()
 
 
 
@@ -158,11 +159,18 @@ class Tasklist(object):
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
+        sql_id = "Select task_id from log_"+self.name+" where done_time = '"+\
+        datetime.datetime.today().strftime("%Y-%m-%d")+"'"
+        cu0.execute(sql_id)
+        result_id = cu0.fetchall()
         self.today.clear()
         i = 0
         print("---------------------------")
         for task in result:
             task = from_tuple(task)
+            task_id = self.fetch_task_id(task)[0]
+            if task_id in [i[0] for i in result_id]:
+                continue
             day = (task.deadline - datetime.datetime.now()).days
             if (task.deadline - datetime.datetime.today()).days < 1:
                 self.today.append(task)
@@ -173,6 +181,7 @@ class Tasklist(object):
                 print("%d:%s" % (i, task.get_name()))
                 i += 1
         print("---------------------------")
+        cu0.close()
 
 if __name__ == "__main__":
     A = Tasklist("winter_holiday")
