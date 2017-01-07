@@ -183,10 +183,34 @@ class Tasklist(object):
         print("---------------------------")
         cu0.close()
 
+
+    def print_tomorrow(self):
+        '''print all item should be done today'''
+        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()        
+        self.today.clear()
+        i = 0
+        print("---------------------------")
+        for task in result:
+            task = from_tuple(task)            
+            day = (task.deadline - datetime.datetime.now()).days
+            if (task.deadline - datetime.datetime.today()).days-1 < 1:
+                self.today.append(task)
+                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
+                i += 1
+            elif (day-1)%task.repeat_day == 0:
+                self.today.append(task)
+                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
+                i += 1
+        print("---------------------------")
+        cu0.close()
+
 if __name__ == "__main__":
     A = Tasklist("winter_holiday")
     while 1:
-        print(" 0: add tasks\n 1: done task \n 2: print all task")
+        print(" 0: add tasks\n 1: done task \n 2: print all task\n 3: print tomorrow")
         Key = input("your choice:")
         if int(Key) == 0:
             AT = A.new_task()
@@ -213,3 +237,6 @@ if __name__ == "__main__":
             A.done_task(A.all_task[int(Index)], int(T[0]))
             if int(T[1]) == 1:
                 A.update_finished(A.all_task[int(Index)])
+        elif int(Key) == 3:
+            A.print_tomorrow()
+            
