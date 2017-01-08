@@ -174,11 +174,11 @@ class Tasklist(object):
             day = (task.deadline - datetime.datetime.now()).days
             if (task.deadline - datetime.datetime.today()).days < 1:
                 self.today.append(task)
-                print("%d:%s" % (i, task.get_name()))
+                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
                 i += 1
             elif day%task.repeat_day == 0:
                 self.today.append(task)
-                print("%d:%s" % (i, task.get_name()))
+                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
                 i += 1
         print("---------------------------")
         cu0.close()
