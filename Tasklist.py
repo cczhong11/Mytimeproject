@@ -155,7 +155,7 @@ class Tasklist(object):
 
     def print_today(self):
         '''print all item should be done today'''
-        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
+        sql = "Select * from "+self.name+" where finished = 0 order by priority DESC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
