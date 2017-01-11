@@ -59,6 +59,10 @@ class Task(Thing):
             self.expected_time, self.finished, self.repeat_day, self.addtime.strftime("%Y-%m-%d"),\
         self.priority, self.urgent)
         return t_all
+    
+    def get_string(self):
+        string = self.get_name()+"\t"+ self.deadline.strftime("%Y-%m-%d")
+        return string
 
 def from_tuple(tup):
     '''turn tuple to task'''

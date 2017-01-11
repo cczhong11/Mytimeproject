@@ -155,6 +155,17 @@ class Tasklist(object):
 
     def print_today(self):
         '''print all item should be done today'''
+        self.add_to_today()
+        print("---------------------------")
+        i = 0
+        for task in self.today:            
+            print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
+            i += 1
+        print("---------------------------")
+        
+    
+    def add_to_today(self):
+        '''add all item should be done today'''
         sql = "Select * from "+self.name+" where finished = 0 order by priority DESC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
@@ -164,8 +175,6 @@ class Tasklist(object):
         cu0.execute(sql_id)
         result_id = cu0.fetchall()
         self.today.clear()
-        i = 0
-        print("---------------------------")
         for task in result:
             task = from_tuple(task)
             task_id = self.fetch_task_id(task)[0]
@@ -174,38 +183,38 @@ class Tasklist(object):
             day = (task.deadline - datetime.datetime.now()).days
             if (task.deadline - datetime.datetime.today()).days < 1:
                 self.today.append(task)
-                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
-                i += 1
             elif day%task.repeat_day == 0:
                 self.today.append(task)
-                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
-                i += 1
-        print("---------------------------")
         cu0.close()
 
-
-    def print_tomorrow(self):
-        '''print all item should be done today'''
+    def add_to_tomorrow(self):
+        '''add all item should be done today'''
         sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
-        result = cu0.fetchall()        
+        result = cu0.fetchall()
         self.today.clear()
-        i = 0
-        print("---------------------------")
+
         for task in result:
-            task = from_tuple(task)            
+            task = from_tuple(task)
             day = (task.deadline - datetime.datetime.now()).days
             if (task.deadline - datetime.datetime.today()).days-1 < 1:
                 self.today.append(task)
-                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
-                i += 1
             elif (day-1)%task.repeat_day == 0:
                 self.today.append(task)
-                print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
-                i += 1
-        print("---------------------------")
+ 
         cu0.close()
+
+    def print_tomorrow(self):
+        '''print all item should be done today'''
+        self.add_to_tomorrow()
+        print("---------------------------")
+        i = 0
+        for task in self.today:
+            print("%d:%s\t%s" % (i, task.get_name(), task.deadline.strftime("%Y-%m-%d")))
+            i += 1
+        print("---------------------------")
+
 
 if __name__ == "__main__":
     A = Tasklist("winter_holiday")
