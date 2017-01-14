@@ -14,6 +14,7 @@ class Tasklist(object):
         self.create_table_sql()
         self.today = []
         self.all_task = []
+        self.type_task = []
 
     def new_task(self):
         '''add tasks to tasklists'''
@@ -99,6 +100,21 @@ class Tasklist(object):
         '''find a task'''
         pass
 
+    def add_to_type(self,type):
+        if type in ['study','work','life','other']:
+            sql = "Select * from "+self.name+" where finished = 0 AND task_type = '"+type+"' order by deadline ASC"
+        elif type in ['to do', 'watch', 'later']:
+            sql = "Select * from "+self.name+" where finished = 0 AND tasklistname = '"+type+"' order by deadline ASC"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()
+        self.type_task.clear()
+
+        for task in result:
+            task = from_tuple(task)
+            self.type_task.append(task)
+            
+        cu0.close()
 
     def fetch_task_id(self, task):
         '''get task_id'''
