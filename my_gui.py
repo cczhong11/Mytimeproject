@@ -14,6 +14,13 @@ def donothing():
     button = Button(filewin, text="Do nothing button")
     button.pack()
 
+def add_newtask():
+    '''do nothing'''
+    filewin = Toplevel(TOP)
+    button = Button(filewin, text="add")
+    #button.pack()
+
+
 def refresh_today():
     '''get new today'''
     for index in range(len(Ann.today)):
@@ -22,7 +29,7 @@ def refresh_today():
                 Ann.done_task(Ann.today[index], int(Ent[index].get()))
             else:
                 Ann.done_task(Ann.today[index])
-    
+
     show_today()
 
 def show_today():
@@ -47,7 +54,7 @@ def show_today():
         Ent[i].grid(row=i+1, column=1)
         i += 1
 def show_tomorrow():
-    '''show today tasks and done tasks'''
+    '''show tomorrow tasks '''
     #todaywin = Toplevel(TOP)
     destory_all(TOP)
     Labels.clear()
@@ -57,7 +64,23 @@ def show_tomorrow():
     #todaywin.geometry('800x600+0+0')
     for task in Ann.today:
         StringVars.append(StringVar())
-        Labels.append(Label(frame2, textvariable=StringVars[i]))
+        Labels.append(Label(TOP, textvariable=StringVars[i]))
+        StringVars[i].set(str(i)+":"+task.get_string())
+        Labels[i].grid(row=i,column=0)
+        i += 1
+
+def show_all():
+    '''show all tasks '''
+    #todaywin = Toplevel(TOP)
+    destory_all(TOP)
+    Labels.clear()
+    StringVars.clear()
+    i = 0
+    Ann.add_to_all()
+    #todaywin.geometry('800x600+0+0')
+    for task in Ann.all_task:
+        StringVars.append(StringVar())
+        Labels.append(Label(TOP, textvariable=StringVars[i]))
         StringVars[i].set(str(i)+":"+task.get_string())
         Labels[i].grid(row=i,column=0)
         i += 1
@@ -120,7 +143,7 @@ def init_menu(top):
     taskmenu.add_command(label="Show as type", command=show_as_type)
     taskmenu.add_command(label="Show with prority and urgent", command=donothing)
     taskmenu.add_command(label="Finished tasks", command=donothing)
-    taskmenu.add_command(label="Show all tasks", command=donothing)
+    taskmenu.add_command(label="Show all tasks", command=show_all)
     menubar.add_cascade(label="Tasks", menu=taskmenu)
     calendarmenu = Menu(menubar, tearoff=0)
     calendarmenu.add_command(label="today", command=donothing)

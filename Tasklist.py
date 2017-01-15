@@ -152,20 +152,16 @@ class Tasklist(object):
 
     def print_all(self):
         '''print all tasks'''
-        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
-        cu0 = self.conn.cursor()
-        cu0.execute(sql)
-        result = cu0.fetchall()
+        
         i = 0
-        self.all_task.clear()
+        self.add_to_all()
         print("---------------------------")
-        for task in result:
-            task = from_tuple(task)
-            self.all_task.append(task)
+        for task in self.all_task:
+                        
             print("%d:%s \t %s" % (i, task.get_name(),task.deadline.strftime("%Y-%m-%d")))
             i += 1
         print("---------------------------")
-        cu0.close()
+       
 
 
 
@@ -220,6 +216,21 @@ class Tasklist(object):
                 self.today.append(task)
  
         cu0.close()
+
+    def add_to_all(self):
+        '''add all item should be done today'''
+        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()
+        self.all_task.clear()
+
+        for task in result:
+            task = from_tuple(task)
+            self.all_task.append(task)
+            
+        cu0.close()
+
 
     def print_tomorrow(self):
         '''print all item should be done today'''
