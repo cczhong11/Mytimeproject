@@ -178,7 +178,7 @@ class Tasklist(object):
     
     def add_to_today(self):
         '''add all item should be done today'''
-        sql = "Select * from "+self.name+" where finished = 0 order by priority DESC"
+        sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()

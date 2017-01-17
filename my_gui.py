@@ -1,6 +1,7 @@
 '''for gui'''
 import tkinter
 from Tasklist import Tasklist
+from Task import Task
 from tkinter import *
 
 def destory_all(frame0):
@@ -15,10 +16,38 @@ def donothing():
     button.pack()
 
 def add_newtask():
-    '''do nothing'''
+    '''add new task'''
     filewin = Toplevel(TOP)
-    button = Button(filewin, text="add")
-    #button.pack()
+    string_task = ['name','deadline(YYYY-MM-DD)','type(study,life,work,other)',\
+    'priority','urgent','expected_time','tasklist(to do, later watch)','repeated_day']
+    Labels.clear()
+    StringVars.clear()
+    Ent.clear()
+    i = 0
+    for string_t in string_task:
+        Ent.append(Entry(filewin))
+        StringVars.append(StringVar())
+        Labels.append(Label(filewin, textvariable=StringVars[i]))
+        StringVars[i].set(string_t)
+        Labels[i].grid(row=i,column=0)
+        Ent[i].grid(row=i,column=1)
+        i += 1
+
+    button = Button(filewin, text="add",command=add_new_task)
+    button.grid(row=i,column=1)
+
+def add_new_task():
+    '''add new task for button'''
+    name = Ent[0].get()
+    deadline = Ent[1].get()
+    new_task = Task(name, deadline)
+    new_task.type_task = Ent[2].get()
+    new_task.priority = Ent[3].get()
+    new_task.urgent = Ent[4].get()
+    new_task.expected_time = Ent[5].get()
+    new_task.tasklistname = Ent[6].get()
+    new_task.repeat_day = Ent[7].get()
+    Ann.add_task(new_task)
 
 
 def refresh_today():
@@ -53,6 +82,8 @@ def show_today():
         Ent.append(Entry(TOP))
         Ent[i].grid(row=i+1, column=1)
         i += 1
+
+
 def show_tomorrow():
     '''show tomorrow tasks '''
     #todaywin = Toplevel(TOP)
@@ -83,6 +114,36 @@ def show_all():
         Labels.append(Label(TOP, textvariable=StringVars[i]))
         StringVars[i].set(str(i)+":"+task.get_string())
         Labels[i].grid(row=i,column=0)
+        i += 1
+
+def finish_t():
+    '''finish task for button'''
+    for index in range(len(Ann.all_task)):
+        if CheckVar[index].get() == 1:            
+            Ann.update_finished(Ann.all_task[index])
+           
+
+    finish_task()
+
+
+def finish_task():
+    '''finish task'''
+    destory_all(TOP)
+    b_refresh = Button(TOP, text="Finished", command=finish_t)    
+    Ann.add_to_all()
+    CheckVar.clear()
+    Checkbox.clear()
+    
+    i = 0
+    b_refresh.grid(row = 0,column=0)
+    #todaywin.geometry('800x600+0+0')
+    for task in Ann.all_task:
+        CheckVar.append(IntVar())
+        Checkbox.append(Checkbutton(TOP, text=str(i)+":"+task.get_string(), \
+                variable=CheckVar[i], onvalue=1, offvalue=0, height=1, \
+                 width=50))
+        Checkbox[i].grid(row=i+1, column=0)
+        
         i += 1
 
 
@@ -135,14 +196,14 @@ def init_menu(top):
     filemenu.add_command(label="Exit", command=top.quit)
     menubar.add_cascade(label="File", menu=filemenu)
     taskmenu = Menu(menubar, tearoff=0)
-    taskmenu.add_command(label="Add new tasks", command=donothing)
+    taskmenu.add_command(label="Add new tasks", command=add_newtask)
     taskmenu.add_separator()
 
     taskmenu.add_command(label="Today tasks", command=show_today)
     taskmenu.add_command(label="Tommorrow tasks", command=show_tomorrow)
     taskmenu.add_command(label="Show as type", command=show_as_type)
     taskmenu.add_command(label="Show with prority and urgent", command=donothing)
-    taskmenu.add_command(label="Finished tasks", command=donothing)
+    taskmenu.add_command(label="Finished tasks", command=finish_task)
     taskmenu.add_command(label="Show all tasks", command=show_all)
     menubar.add_cascade(label="Tasks", menu=taskmenu)
     calendarmenu = Menu(menubar, tearoff=0)
