@@ -7,7 +7,7 @@ class Cal(object):
     def __init__(self):
         self.Titems = []
         self.sync = False
-        self.conn = sqlite3.connect('Cal.sqlite')
+        self.conn = sqlite3.connect('tasks.sqlite')
         self.create_table_sql()
 
 
@@ -36,11 +36,22 @@ class Cal(object):
 
     def fetch_cal_id(self, titem):
         '''get cal_id'''
-        sql = "SELECT cal_id from calendar WHERE name = '" +titem.get_name()+"'"
+        sql = "SELECT cal_id from calendar WHERE name = ? and start_day = ? and start_time = ?"
         cu0 = self.conn.cursor()
-        cu0.execute(sql)
+        data = titem.get_all()
+        data = (data[0], data[1], data[3])
+        cu0.execute(sql, data)
         result = cu0.fetchone()
         return result
+
+    def update_efficience(self, titem, eff):
+        '''update cal'''
+        update_sql = "UPDATE calendar SET efficient = ? WHERE cal_id = ?"
+        data = (eff, self.fetch_cal_id(titem)[0])
+        cu0 = self.conn.cursor()        
+        cu0.execute(update_sql, data)
+        self.conn.commit()
+        cu0.close()
 
     def create_table_sql(self):
         '''create sql table'''
@@ -74,14 +85,52 @@ class Cal(object):
             tit1.end_time = datetime.datetime(Y, M, D, i, 30, 0)
             tit2.start_time = datetime.datetime(Y, M, D, i, 30, 0)
             tit2.end_time = datetime.datetime(Y, M, D, i+1, 0, 0)
+            if tit1.get_name() == tit2.get_name():
+                tit1.combine(tit2)
+            else:
+                self.add_Titems(tit2)
             self.add_Titems(tit1)
-            self.add_Titems(tit2)
 
 
-    def add_all_Titems(self):
+
+    def add_all_Titems(self, day0):
         '''add all to '''
+        sql = "Select * from calendar where start_day= ?"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql, (day0,))
+        result = cu0.fetchall()
+        self.Titems.clear()
+        for titem in result:
+            titem = from_tuple(titem)
+            self.Titems.append(titem)
+        cu0.close()
+
+    def print_all(self):
+        '''print all'''
+        print("--------------------")
+        for one in self.Titems:
+            print("%s-%s %s"%(one.start_time.strftime("%H:%M"), one.end_time.strftime("%H:%M"), one.get_name()))
+            eff = input("efficient?")
+            self.update_efficience(one, eff)
+        print("---------------------")
+
+    def write_to_csv(self, day0):
+        '''write 2 csv file'''
+        file = day0+".csv"
+        self.add_all_Titems(day0)
+        f = open(file,"w+", encoding="utf-8")
+        f.write("Subject, Start Date, Start Time, End Date, End Time\n")
+        for one in self.Titems:
+            tup = one.get_all()
+            str1 = '{0}, {1}, {2}, {3}, {4}'.format(tup[0], tup[1], tup[3], tup[2], tup[4])
+            f.write(str1+"\n")
+        f.close()
+
 
 if __name__ == '__main__':
     AA = Cal()
     newday = datetime.datetime.now().date()+datetime.timedelta(days=1)
-    AA.creat_new_day(newday)
+    #AA.add_all_Titems("2017-01-24")
+    #AA.print_all()
+    #AA.creat_new_day(newday)
+    AA.write_to_csv("2017-01-25")

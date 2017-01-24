@@ -20,8 +20,25 @@ class Titem(Thing):
         self.end_time.strftime("%H:%M:%S"), self.efficient, self.type)
         return t_all
 
+    def combine(self, titem):
+        '''combine another titem'''
+        if self.get_name() == titem.get_name():
+            if self.end_time == titem.start_time:
+                self.end_time = titem.end_time
+                return True
+        return False
 
 def from_task(task):
     '''turn task to Titem'''
     newT = Titem(task.get_name())
-    
+
+def from_tuple(tup):
+    '''TURN TUPLE TO SQL'''
+    a = Titem(tup[1])
+    str1 = tup[2] +" " + tup[4]
+    str2 = tup[3] +" " + tup[5]
+    a.start_time = datetime.datetime.strptime(str1, "%Y-%m-%d %H:%M:%S")
+    a.end_time = datetime.datetime.strptime(str2, "%Y-%m-%d %H:%M:%S")
+    a.efficient = tup[6]
+    a.type = tup[7]
+    return a

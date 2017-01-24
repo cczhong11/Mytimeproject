@@ -152,12 +152,10 @@ class Tasklist(object):
 
     def print_all(self):
         '''print all tasks'''
-        
         i = 0
         self.add_to_all()
         print("---------------------------")
         for task in self.all_task:
-                        
             print("%d:%s \t %s" % (i, task.get_name(),task.deadline.strftime("%Y-%m-%d")))
             i += 1
         print("---------------------------")
