@@ -85,11 +85,12 @@ class Cal(object):
             tit1.end_time = datetime.datetime(Y, M, D, i, 30, 0)
             tit2.start_time = datetime.datetime(Y, M, D, i, 30, 0)
             tit2.end_time = datetime.datetime(Y, M, D, i+1, 0, 0)
+            self.add_Titems(tit1)
             if tit1.get_name() == tit2.get_name():
                 tit1.combine(tit2)
             else:
                 self.add_Titems(tit2)
-            self.add_Titems(tit1)
+
 
 
 
@@ -130,7 +131,7 @@ class Cal(object):
 if __name__ == '__main__':
     AA = Cal()
     newday = datetime.datetime.now().date()+datetime.timedelta(days=1)
-    #AA.add_all_Titems("2017-01-24")
+    #AA.add_all_Titems("2017-01-25")    
     #AA.print_all()
     #AA.creat_new_day(newday)
-    AA.write_to_csv("2017-01-25")
+    AA.write_to_csv("2017-01-26")
