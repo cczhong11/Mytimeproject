@@ -6,6 +6,7 @@ from tkinter import *
 from cal import Cal
 import datetime
 from Titem import *
+from tkinter import messagebox
 
 
 def destory_all(frame0):
@@ -117,7 +118,7 @@ def show_all():
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[i]))
         StringVars[i].set(str(i)+":"+task.get_string())
-        Labels[i].grid(row=i,column=0)
+        Labels[i].grid(row=i, column=0)
         i += 1
 
 def finish_t():
@@ -137,7 +138,7 @@ def finish_task():
     CheckVar.clear()
     Checkbox.clear()
     i = 0
-    b_refresh.grid(row = 0,column=0)
+    b_refresh.grid(row = 0, column=0)
     #todaywin.geometry('800x600+0+0')
     for task in Ann.all_task:
         CheckVar.append(IntVar())
@@ -161,7 +162,7 @@ def show_type(type0):
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[i]))
         StringVars[i].set(str(i)+":"+task.get_string())
-        Labels[i].grid(row=i+2,column=0)
+        Labels[i].grid(row=i+2, column=0)
         i += 1
 
 
@@ -200,17 +201,17 @@ def assign_tomorrow():
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[i]))
         StringVars[i].set(str(i)+":"+task.get_name())
-        Labels[i].grid(row=i,column=0)
+        Labels[i].grid(row=i, column=0)
         i += 1
     m1 = i
     i = 0
-    for itime in range(8,23):
-        if itime in [8,12,18]:
+    for itime in range(8, 23):
+        if itime in [8, 12, 18]:
             continue
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[m1+i]))
         StringVars[m1+i].set(str(itime)+":00")
-        Labels[m1+i].grid(row=i,column=1)
+        Labels[m1+i].grid(row=i, column=1)
         i += 1
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[m1+i]))
@@ -247,15 +248,49 @@ def add_tomorrow():
         tit2 = tits[j+1]
         if tit1.combine(tit2):
             tits.remove(tit2)
+            if i == 22:
+                Cnn.add_Titems(tit1)
         else:
             j += 1
             Cnn.add_Titems(tit1)
+
+def update_eff():
+    '''update for efficience button'''
+    for i in range(len(Cnn.Titems)):
+        eff = int(Ent[i].get())
+        Cnn.update_efficience(Cnn.Titems[i], eff) 
+
+def show_today_cal():
+    '''show today cal'''
+    destory_all(TOP)
+    Labels.clear()
+    StringVars.clear()
+    Labels2 = []
+    StringVars2 = []
+    Ent.clear()
+    i = 0
+    Cnn.add_all_Titems(datetime.datetime.now().date().strftime("%Y-%m-%d"))
+    for tit in Cnn.Titems:
+        StringVars.append(StringVar())
+        Labels.append(Label(TOP, textvariable=StringVars[i]))
+        StringVars[i].set(tit.start_time.strftime("%H:%M")+"-"+ tit.end_time.strftime("%H:%M"))
+        Labels[i].grid(row=i, column=0)
+        StringVars2.append(StringVar())
+        Labels2.append(Label(TOP, textvariable=StringVars2[i]))
+        StringVars2[i].set(tit.get_name())
+        Labels2[i].grid(row=i, column=1)
+        Ent.append(Entry(TOP))
+        Ent[i].grid(row=i, column=2)
+        i += 1
+    button = Button(TOP, text="update efficience",command=update_eff)
+    button.grid(row=0,column=3)
+
 def export_to_csv():
     '''export to csv'''
     date = datetime.datetime.now().date()+datetime.timedelta(days=1)
     day = date.strftime("%Y-%m-%d")
     Cnn.write_to_csv(day)
-    '''add msgbox'''
+    messagebox.showinfo("Message", day+"Ok!")
 
 
 def init_menu(top):
@@ -283,10 +318,12 @@ def init_menu(top):
     taskmenu.add_command(label="Show all tasks", command=show_all)
     menubar.add_cascade(label="Tasks", menu=taskmenu)
     calendarmenu = Menu(menubar, tearoff=0)
-    calendarmenu.add_command(label="today", command=donothing)
+    calendarmenu.add_command(label="today", command=show_today_cal)
     calendarmenu.add_command(label="tomorrow", command=assign_tomorrow)
     menubar.add_cascade(label="Calendar", menu=calendarmenu)
     return menubar
+
+
 
 if __name__ == "__main__":
     root = tkinter.Tk()
