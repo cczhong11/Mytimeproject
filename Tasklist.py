@@ -226,9 +226,20 @@ class Tasklist(object):
         for task in result:
             task = from_tuple(task)
             self.all_task.append(task)
-            
+
         cu0.close()
 
+    def find_by_name(self, name0):
+        '''find task in tasklists and return task'''
+        sql = "Select * from "+self.name+" where finished = 0 and name = ?"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql,(name0,))
+        result = cu0.fetchone()
+        try:
+            task = from_tuple(result)
+        except:
+            task = -1
+        return task
 
     def print_tomorrow(self):
         '''print all item should be done today'''
@@ -243,6 +254,11 @@ class Tasklist(object):
 
 if __name__ == "__main__":
     A = Tasklist("winter_holiday")
+    if A.find_by_name("放松的时间")!=-1:
+        print("yes")
+    else:
+        print("no")
+
     while 1:
         print(" 0: add tasks\n 1: done task \n 2: print all task\n 3: print tomorrow")
         Key = input("your choice:")

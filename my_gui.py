@@ -258,7 +258,13 @@ def update_eff():
     '''update for efficience button'''
     for i in range(len(Cnn.Titems)):
         eff = int(Ent[i].get())
-        Cnn.update_efficience(Cnn.Titems[i], eff) 
+        Cnn.update_efficience(Cnn.Titems[i], eff)
+        name = Cnn.Titems[i].get_name()
+        duration = (Cnn.Titems[i].start_time-Cnn.Titems[i].end_time).seconds/3600
+        duration = round(duration*eff/10)
+        Ta = Ann.find_by_name(name)
+        if Ta != -1:
+            Ann.done_task(Ta,duration)
 
 def show_today_cal():
     '''show today cal'''
