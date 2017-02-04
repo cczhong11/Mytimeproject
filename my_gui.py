@@ -22,7 +22,7 @@ def donothing():
 
 def add_newtask():
     '''add new task'''
-    filewin = Toplevel(TOP)
+    filewin = Toplevel(TOP)    
     string_task = ['name','deadline(YYYY-MM-DD)','type(study,life,work,other)',\
     'priority','urgent','expected_time','tasklist(to do, later watch)','repeated_day']
     Labels.clear()
@@ -38,22 +38,24 @@ def add_newtask():
         Ent[i].grid(row=i,column=1)
         i += 1
 
-    button = Button(filewin, text="add",command=add_new_task)
+    button = Button(filewin, text="add",command=lambda :add_new_task(filewin))
     button.grid(row=i,column=1)
+    
 
-def add_new_task():
+
+def add_new_task(filewin):
     '''add new task for button'''
     name = Ent[0].get()
     deadline = Ent[1].get()
     new_task = Task(name, deadline)
-    new_task.type_task = Ent[2].get()
+    new_task.task_type = Ent[2].get()
     new_task.priority = Ent[3].get()
     new_task.urgent = Ent[4].get()
     new_task.expected_time = Ent[5].get()
     new_task.tasklistname = Ent[6].get()
     new_task.repeat_day = Ent[7].get()
     Ann.add_task(new_task)
-
+    filewin.destroy()
 
 def refresh_today():
     '''get new today'''
@@ -335,8 +337,10 @@ if __name__ == "__main__":
     root = tkinter.Tk()
     root.geometry('800x600+0+0')
     TOP = Frame(root)
+    
     MENUBAR = init_menu(root)
     TOP.pack()
+    
     root.config(menu=MENUBAR)
     Ann = Tasklist("winter_holiday")
     Cnn = Cal()
