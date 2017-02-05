@@ -129,7 +129,7 @@ class Cal(object):
         result = cu0.fetchall()
         self.Titems.clear()
         for titem in result:
-            titem = from_tuple(titem)
+            titem = from_tuple_t(titem)
             self.Titems.append(titem)
         cu0.close()
 

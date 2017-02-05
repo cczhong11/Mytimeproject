@@ -44,8 +44,8 @@ def from_task(task):
     '''turn task to Titem'''
     newT = Titem(task.get_name())
 
-def from_tuple(tup):
-    '''TURN TUPLE TO SQL'''
+def from_tuple_t(tup):
+    '''TURN titem TUPLE TO SQL'''
     a = Titem(tup[1])
     str1 = tup[2] +" " + tup[4]
     str2 = tup[3] +" " + tup[5]
