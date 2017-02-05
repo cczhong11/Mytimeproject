@@ -8,7 +8,7 @@ import datetime
 from Titem import *
 from tkinter import messagebox
 
-
+CURRENTDAY = datetime.datetime.now()
 def destory_all(frame0):
     '''destory all widget'''
     for widget in frame0.winfo_children():
@@ -233,7 +233,7 @@ def assign_tomorrow():
 def add_tomorrow():
     '''add tomorrow calendar for button'''
     m1 = len(Ann.today)
-    date = datetime.datetime.now().date()+datetime.timedelta(days=1)
+    date = CURRENTDAY.date()+datetime.timedelta(days=1)
     tits = []
     for i in range(24):
         thing = Ent[i].get()
@@ -268,6 +268,12 @@ def update_eff():
         if Ta != -1:
             Ann.done_task(Ta,duration)
 
+def assign_yesterday():
+    '''assign global varible CURRENTDAY to yesterday'''
+    global  CURRENTDAY
+    CURRENTDAY = datetime.datetime.now()-datetime.timedelta(days=1)
+    messagebox.showinfo("Message", "Ok!")
+
 def show_today_cal():
     '''show today cal'''
     destory_all(TOP)
@@ -277,7 +283,8 @@ def show_today_cal():
     StringVars2 = []
     Ent.clear()
     i = 0
-    Cnn.add_all_Titems(datetime.datetime.now().date().strftime("%Y-%m-%d"))
+    print(CURRENTDAY)
+    Cnn.add_all_Titems(CURRENTDAY.date().strftime("%Y-%m-%d"))
     for tit in Cnn.Titems:
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[i]))
@@ -295,7 +302,7 @@ def show_today_cal():
 
 def export_to_csv():
     '''export to csv'''
-    date = datetime.datetime.now().date()+datetime.timedelta(days=1)
+    date = CURRENTDAY.date()+datetime.timedelta(days=1)
     day = date.strftime("%Y-%m-%d")
     Cnn.write_to_csv(day)
     messagebox.showinfo("Message", day+"Ok!")
@@ -326,8 +333,10 @@ def init_menu(top):
     taskmenu.add_command(label="Show all tasks", command=show_all)
     menubar.add_cascade(label="Tasks", menu=taskmenu)
     calendarmenu = Menu(menubar, tearoff=0)
-    calendarmenu.add_command(label="today", command=show_today_cal)
-    calendarmenu.add_command(label="tomorrow", command=assign_tomorrow)
+    calendarmenu.add_command(label="Today", command=show_today_cal)
+    calendarmenu.add_command(label="Tomorrow", command=assign_tomorrow)
+    calendarmenu.add_separator()
+    calendarmenu.add_command(label="Return to yesterday", command=assign_yesterday)
     menubar.add_cascade(label="Calendar", menu=calendarmenu)
     return menubar
 
@@ -337,10 +346,8 @@ if __name__ == "__main__":
     root = tkinter.Tk()
     root.geometry('800x600+0+0')
     TOP = Frame(root)
-    
     MENUBAR = init_menu(root)
     TOP.pack()
-    
     root.config(menu=MENUBAR)
     Ann = Tasklist("winter_holiday")
     Cnn = Cal()
