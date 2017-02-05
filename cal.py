@@ -11,21 +11,31 @@ class Cal(object):
         self.create_table_sql()
 
 
-    def add_Titems(self, titem):
+    def add_Titems(self, titem,real=0):
         '''insert a item to sql'''
         newt = titem.get_all()
         cu0 =  self.conn.cursor()
         result = (self.find_max_id(),)
-        save_sql = "INSERT INTO calendar values (?, ?, ?, ?, ?, ?,?,?)"
-        result = result + newt
+        result2 = (self.find_max_id(1),)
+        if real == 0:
+            save_sql = "INSERT INTO calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            result = result + newt
+        else:
+            save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            result = result2 + newt
+        
+        print(result)
         cu0.execute(save_sql, result)
         self.conn.commit()
         cu0.close()
 
-    def find_max_id(self):
+    def find_max_id(self,real=0):
         '''get max id in two different table'''
         cu0 = self.conn.cursor()
-        find_max_index = "SELECT MAX(cal_id) FROM calendar"
+        if real == 0:
+            find_max_index = "SELECT MAX(cal_id) FROM calendar"
+        else:
+            find_max_index = "SELECT MAX(cal_id) FROM real_calendar"
         try:
             cu0.execute(find_max_index)
             result = int(cu0.fetchone()[0])
@@ -44,11 +54,14 @@ class Cal(object):
         result = cu0.fetchone()
         return result
 
-    def update_efficience(self, titem, eff):
+    def update_efficience(self, titem, eff,real_titem=-1):
         '''update cal'''
         update_sql = "UPDATE calendar SET efficient = ? WHERE cal_id = ?"
+        print(titem.get_name())
         data = (eff, self.fetch_cal_id(titem)[0])
-        cu0 = self.conn.cursor()        
+        if real_titem != -1:
+            self.add_Titems(real_titem, 1)
+        cu0 = self.conn.cursor()
         cu0.execute(update_sql, data)
         self.conn.commit()
         cu0.close()
@@ -64,9 +77,23 @@ class Cal(object):
                           `end_time` varchar(20) DEFAULT 0,\
                           `efficient` int(5) DEFAULT 0,\
                            `type` varchar(20) DEFAULT 0,\
+                           `Deatil_type` varchar(20) DEFAULT 0,\
+                          PRIMARY KEY (`cal_id`))"
+        create_table_sql2 = "CREATE TABLE IF NOT EXISTS real_calendar( \
+                          `cal_id` int(11) NOT NULL,\
+                          `name` varchar(100) NOT NULL,\
+                          `start_day` varchar(20) DEFAULT NULL,\
+                          `end_day` varchar(20) DEFAULT NULL,\
+                          `start_time` varchar(20) DEFAULT NULL,\
+                          `end_time` varchar(20) DEFAULT 0,\
+                          `efficient` int(5) DEFAULT 0,\
+                           `type` varchar(20) DEFAULT 0,\
+                           `Deatil_type` varchar(20) DEFAULT 0,\
                           PRIMARY KEY (`cal_id`))"
         cu = self.conn.cursor()
         cu.execute(create_table_sql)
+        self.conn.commit()
+        cu.execute(create_table_sql2)
         self.conn.commit()
         cu.close()
 

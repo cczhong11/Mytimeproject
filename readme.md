@@ -16,5 +16,8 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 - 在日历完成项中添加对于type的支持，默认task的type
 - 统计各个任务，各个type完成的时间图表，可以按月，周。连胜次数之类的
 - 在日历中显示已有的数据，可以修改，而不是每次都是初始值
+- Habit Tracker, 可以选择几个项目进行查看
+- Reading Progress
+- most distracted things
 
 

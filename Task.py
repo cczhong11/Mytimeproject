@@ -21,6 +21,7 @@ class Task(Thing):
         self.donetime = []
         self.index = 0
         self.addtime = datetime.datetime.now()
+        self.detail_type=''
 
     def print_time_summary(self):
         '''this method can printout time summary for task'''
@@ -57,7 +58,7 @@ class Task(Thing):
         t_all = (self.get_name(), self.deadline.strftime("%Y-%m-%d"), \
             self.tasklistname, self.task_type, self.week, self.already_time,\
             self.expected_time, self.finished, self.repeat_day, self.addtime.strftime("%Y-%m-%d"),\
-        self.priority, self.urgent)
+        self.priority, self.urgent, self.detail_type)
         return t_all
     
     def get_string(self):
@@ -77,6 +78,7 @@ def from_tuple(tup):
     newtask.addtime = tup[10]
     newtask.priority = tup[11]
     newtask.urgent = tup[12]
+    newtask.detail_type = tup[13]
     return newtask
 
 if __name__ == "__main__":

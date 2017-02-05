@@ -12,4 +12,8 @@ class Thing(object):
     def get_name(self):
         '''get private name'''
         return self.__name
+
+    def set_name(self, name):
+        '''set private name'''
+        self.__name = name
         

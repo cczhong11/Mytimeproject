@@ -24,7 +24,7 @@ def add_newtask():
     '''add new task'''
     filewin = Toplevel(TOP)    
     string_task = ['name','deadline(YYYY-MM-DD)','type(study,life,work,other)',\
-    'priority','urgent','expected_time','tasklist(to do, later watch)','repeated_day']
+    'priority','urgent','expected_time','tasklist(to do, later watch)','repeated_day', 'detail_type']
     Labels.clear()
     StringVars.clear()
     Ent.clear()
@@ -54,6 +54,7 @@ def add_new_task(filewin):
     new_task.expected_time = Ent[5].get()
     new_task.tasklistname = Ent[6].get()
     new_task.repeat_day = Ent[7].get()
+    new_task.detail_type = Ent[8].get()
     Ann.add_task(new_task)
     filewin.destroy()
 
@@ -237,12 +238,25 @@ def add_tomorrow():
     tits = []
     for i in range(24):
         thing = Ent[i].get()
+        ntype =''
+        ndtype=''
         if thing.isdigit() is True:
             thing = StringVars[int(thing)].get().split(":")[1]
+            ntask = Ann.find_by_name(thing)
+            ntype = ntask.task_type
+            ndtype = ntask.detail_type
+        else:
+            if len(thing.split(";")) == 3:
+                things = thing.split(";")
+                thing = things[0]
+                ntype = things[1]
+                ndtype = things[2]
         time = datetime.datetime.strptime(StringVars[m1+i].get(),"%H:%M")
         tit = Titem(thing)
         tit.start_time =  time.replace(year=date.year, month=date.month, day=date.day)
         tit.end_time = tit.start_time+datetime.timedelta(minutes=30)
+        tit.type = ntype
+        tit.detail_type = ndtype
         tits.append(tit)
     j = 0
     for i in range(23):
@@ -259,8 +273,16 @@ def add_tomorrow():
 def update_eff():
     '''update for efficience button'''
     for i in range(len(Cnn.Titems)):
-        eff = int(Ent[i].get())
-        Cnn.update_efficience(Cnn.Titems[i], eff)
+        thing = Ent[i].get().split(";")
+        eff = int(thing[0])
+        if eff < 6 and len(thing) == 4:
+            ntit = copy_t(Cnn.Titems[i])            
+            ntit.set_name(thing[1])
+            ntit.type = thing[2]
+            ntit.detail_type = thing[3]
+            Cnn.update_efficience(Cnn.Titems[i], eff, ntit)
+        else:
+            Cnn.update_efficience(Cnn.Titems[i], eff)
         name = Cnn.Titems[i].get_name()
         duration = (Cnn.Titems[i].start_time-Cnn.Titems[i].end_time).seconds/3600
         duration = round(duration*eff/10)

@@ -45,7 +45,7 @@ class Tasklist(object):
         newt = task.get_all()
         cu0 =  self.conn.cursor()
         result = (self.find_max_id(0, "task_id"),)
-        save_sql = "INSERT INTO "+self.name+ " values (?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?)"
+        save_sql = "INSERT INTO "+self.name+ " values (?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?)"
         result = result + newt
         cu0.execute(save_sql, result)
         self.conn.commit()
@@ -69,6 +69,7 @@ class Tasklist(object):
                           `addtime` varchar(20) DEFAULT NULL,\
                           `priority` int(10) DEFAULT NULL,\
                             `urgent` int(10) DEFAULT NULL,\
+                            `Detail_type` char(20) DEFAULT NULL,\
                            PRIMARY KEY (`task_id`))"
         create_table_log = "CREATE TABLE IF NOT EXISTS "+"log_"+self.name+"(\
                           `id` int(11) NOT NULL,\
