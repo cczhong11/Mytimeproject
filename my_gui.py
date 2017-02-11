@@ -180,7 +180,7 @@ def show_as_type():
     Lb1.insert(5, "to do") 
     Lb1.insert(6, "later")
     Lb1.insert(7, "watch")
-    print(Lb1.get(1))
+    
     Lb1.grid(row=0, column=0)    
     frame2 = Frame(TOP)
     frame2.grid(row=2, column=0)
@@ -222,7 +222,7 @@ def assign_tomorrow():
         Labels[m1+i].grid(row=i,column=1)
         i += 1
     m2 = i
-    print(m2)
+    
     for i in range(m2):
         Ent.append(Entry(TOP))
         Ent[i].grid(row=i, column=2)
@@ -284,7 +284,7 @@ def update_eff():
         else:
             Cnn.update_efficience(Cnn.Titems[i], eff)
         name = Cnn.Titems[i].get_name()
-        duration = (Cnn.Titems[i].start_time-Cnn.Titems[i].end_time).seconds/3600
+        duration = (Cnn.Titems[i].end_time-Cnn.Titems[i].start_time).seconds/3600
         duration = round(duration*eff/10)
         Ta = Ann.find_by_name(name)
         if Ta != -1:
@@ -305,7 +305,7 @@ def show_today_cal():
     StringVars2 = []
     Ent.clear()
     i = 0
-    print(CURRENTDAY)
+    #print(CURRENTDAY)
     Cnn.add_all_Titems(CURRENTDAY.date().strftime("%Y-%m-%d"))
     for tit in Cnn.Titems:
         StringVars.append(StringVar())

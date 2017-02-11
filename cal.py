@@ -24,7 +24,7 @@ class Cal(object):
             save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             result = result2 + newt
         
-        print(result)
+        
         cu0.execute(save_sql, result)
         self.conn.commit()
         cu0.close()
@@ -57,7 +57,7 @@ class Cal(object):
     def update_efficience(self, titem, eff,real_titem=-1):
         '''update cal'''
         update_sql = "UPDATE calendar SET efficient = ? WHERE cal_id = ?"
-        print(titem.get_name())
+        
         data = (eff, self.fetch_cal_id(titem)[0])
         if real_titem != -1:
             self.add_Titems(real_titem, 1)
