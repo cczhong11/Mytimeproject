@@ -265,14 +265,37 @@ class Tasklist(object):
             sql = "Select done_time from log_"+self.name+" where name = ? and done_time >= ? and done_time < ?"
             cu0 = self.conn.cursor()
             nm  = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 1).strftime("%Y-%M-%d")
-            cu0.execute(sql,(taskname,ind, nm))
+            cu0.execute(sql, (taskname, ind, nm))
             result = cu0.fetchall()
         else:
             sql = "Select done_time from log_"+self.name+" where name = ? "
             cu0 = self.conn.cursor()
-            cu0.execute(sql,(taskname,))
+            cu0.execute(sql, (taskname,))
             result = cu0.fetchall()
         return result
+
+    def report_u_habit(self, ind, yom=0):
+        '''get data for report for what i have done task'''
+        all_sql = "Select name, count(name) from log_"+self.name
+        l_sql = "Group BY name Order By count(name)"
+        if yom == 0:
+            sql = all_sql + " where done_week = ?" +l_sql
+            cu0 = self.conn.cursor()
+            cu0.execute(sql,(ind, ))
+            result = cu0.fetchall()
+        elif yom == 1:
+            sql = all_sql +" where done_time >= ? and done_time < ?"+l_sql
+            cu0 = self.conn.cursor()
+            nm  = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 1).strftime("%Y-%M-%d")
+            cu0.execute(sql, (ind, nm, ))
+            result = cu0.fetchall()
+        else:
+            sql = all_sql + l_sql
+            cu0 = self.conn.cursor()
+            cu0.execute(sql, )
+            result = cu0.fetchall()
+        return result
+        
 
 def add_months(sourcedate,months):
     '''date util'''

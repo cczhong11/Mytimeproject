@@ -21,8 +21,13 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 
 - 统计各个任务，各个type完成的时间图表，可以按月，周。连胜次数之类的
 - 在日历中显示已有的数据，可以修改，而不是每次都是初始值
-- Habit Tracker, 可以选择几个项目进行查看
-- Reading Progress
-- most distracted things
+- wanted read book sorted
+- 人生金字塔以及每周的努力
+- 显示已有的事件，自动匹配类型
 
-
+### report arragement
+1. what have i done in the last week/month (bar chart)
+2. where do i spend my time (pie chart with type)
+3. when is my most distracted time and effient time? (bar chart)
+4. habit Tracker 
+5. reading progress

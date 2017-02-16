@@ -142,6 +142,16 @@ class Cal(object):
             self.update_efficience(one, eff)
         print("---------------------")
 
+    def report_doing(self, ind, yom=0):
+        '''for pie chart with type'''
+        sql = "select type, Detail_type,start_time, end_time from calendar where efficient > 5 "
+        cu0 = self.conn.cursor()
+        if yom==2: #for all time            
+            cu0.execute(sql)
+        result = cu0.fetchall()
+        return result
+
+
     def write_to_csv(self, day0):
         '''write 2 csv file'''
         file = day0+".csv"
