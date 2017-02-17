@@ -1,4 +1,5 @@
 '''FOR calendar'''
+#/usr/bin/python3
 import sqlite3
 import datetime
 from Titem import *
@@ -146,8 +147,15 @@ class Cal(object):
         '''for pie chart with type'''
         sql = "select type, Detail_type,start_time, end_time from calendar where efficient > 5 "
         cu0 = self.conn.cursor()
-        if yom==2: #for all time            
+        if yom==2: #for all time
             cu0.execute(sql)
+        elif yom == 1:
+            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nend = nstart + datetime.timedelta(days=6)
+            sql = sql + "and start_day >= ? and start_day < ?"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
+            print(data)
+            cu0.execute(sql, data)
         result = cu0.fetchall()
         return result
 
