@@ -199,6 +199,7 @@ def assign_tomorrow():
     Ent.clear()
     i = 0
     Ann.add_to_tomorrow()
+    Cnn.fetch_activity()
     #todaywin.geometry('800x600+0+0')
     for task in Ann.today:
         StringVars.append(StringVar())
@@ -227,8 +228,16 @@ def assign_tomorrow():
         Ent.append(Entry(TOP))
         Ent[i].grid(row=i, column=2)
     '''add type?'''
+    i = 0
+    m3 = len(StringVars)
+    for task in Cnn.activities:
+        StringVars.append(StringVar())
+        Labels.append(Label(TOP, textvariable=StringVars[m3+i]))
+        StringVars[m3+i].set(str(i+100)+":"+task[0])
+        Labels[m3+i].grid(row=i, column=3)
+        i += 1
     button = Button(TOP, text="add",command=add_tomorrow)
-    button.grid(row=0,column=3)
+    button.grid(row=0,column=4)
 
 
 def add_tomorrow():
@@ -241,10 +250,16 @@ def add_tomorrow():
         ntype =''
         ndtype=''
         if thing.isdigit() is True:
-            thing = StringVars[int(thing)].get().split(":")[1]
-            ntask = Ann.find_by_name(thing)
-            ntype = ntask.task_type
-            ndtype = ntask.detail_type
+            if int(thing) <100:
+                thing = StringVars[int(thing)].get().split(":")[1]
+                ntask = Ann.find_by_name(thing)
+                ntype = ntask.task_type
+                ndtype = ntask.detail_type
+            else:
+                k = int(thing)-100
+                thing = Cnn.activities[k][0]
+                ntype = Cnn.activities[k][1]
+                ndtype = Cnn.activities[k][2]
         else:
             if len(thing.split(";")) == 3:
                 things = thing.split(";")

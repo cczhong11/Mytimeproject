@@ -8,6 +8,7 @@ class Cal(object):
     def __init__(self):
         self.Titems = []
         self.sync = False
+        self.activities = ()
         self.conn = sqlite3.connect('tasks.sqlite')
         self.create_table_sql()
 
@@ -119,7 +120,14 @@ class Cal(object):
             else:
                 self.add_Titems(tit2)
 
-
+    def fetch_activity(self):
+        self.activities = ()
+        sql = "Select * from activity"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql)
+        result = cu0.fetchall()
+        cu0.close()
+        self.activities = result
 
 
     def add_all_Titems(self, day0):
@@ -179,4 +187,6 @@ if __name__ == '__main__':
     #AA.add_all_Titems("2017-01-25")    
     #AA.print_all()
     #AA.creat_new_day(newday)
-    AA.write_to_csv("2017-01-26")
+    #AA.write_to_csv("2017-01-26")
+    AA.fetch_activity()
+    print(AA.activities)
