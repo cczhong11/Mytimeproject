@@ -25,8 +25,8 @@ class Cal(object):
         else:
             save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
             result = result2 + newt
-        
-        
+
+
         cu0.execute(save_sql, result)
         self.conn.commit()
         cu0.close()
@@ -92,10 +92,17 @@ class Cal(object):
                            `type` varchar(20) DEFAULT 0,\
                            `Deatil_type` varchar(20) DEFAULT 0,\
                           PRIMARY KEY (`cal_id`))"
+        create_activity = "CREATE TABLE IF NOT EXISTS activity(\
+                            `name` varchar(100) NOT NULL,\
+                            `type` varchar(20) DEFAULT 0,\
+                           `Deatil_type` varchar(20) DEFAULT 0,\
+                            PRIMARY KEY (`name`))"
         cu = self.conn.cursor()
         cu.execute(create_table_sql)
         self.conn.commit()
         cu.execute(create_table_sql2)
+        self.conn.commit()
+        cu.execute(create_activity)
         self.conn.commit()
         cu.close()
 
@@ -121,6 +128,7 @@ class Cal(object):
                 self.add_Titems(tit2)
 
     def fetch_activity(self):
+        '''fetch all activity'''
         self.activities = ()
         sql = "Select * from activity"
         cu0 = self.conn.cursor()
@@ -128,6 +136,14 @@ class Cal(object):
         result = cu0.fetchall()
         cu0.close()
         self.activities = result
+    
+    def add_activity(self, name, type0, detail_type):
+        '''add new activity'''
+        sql = "INSERT INTO activity values (?, ?, ?)"
+        cu0 = self.conn.cursor()
+        cu0.execute(sql,(name,type0, detail_type,))
+        self.conn.commit()
+        cu0.close()
 
 
     def add_all_Titems(self, day0):

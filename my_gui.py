@@ -7,7 +7,7 @@ from cal import Cal
 import datetime
 from Titem import *
 from tkinter import messagebox
-
+from report import Report
 CURRENTDAY = datetime.datetime.now()
 def destory_all(frame0):
     '''destory all widget'''
@@ -40,7 +40,26 @@ def add_newtask():
 
     button = Button(filewin, text="add",command=lambda :add_new_task(filewin))
     button.grid(row=i,column=1)
-    
+def add_activity():
+    '''add new task'''
+    filewin = Toplevel(TOP)    
+    string_task = ['name','type', 'detail_type']
+    Labels.clear()
+    StringVars.clear()
+    Ent.clear()
+    i = 0
+    for string_t in string_task:
+        Ent.append(Entry(filewin))
+        StringVars.append(StringVar())
+        Labels.append(Label(filewin, textvariable=StringVars[i]))
+        StringVars[i].set(string_t)
+        Labels[i].grid(row=i, column=0)
+        Ent[i].grid(row=i, column=1)
+        i += 1
+
+    button = Button(filewin, text="add",command=lambda :add_new_activity(filewin))
+    button.grid(row=i,column=1)
+
 
 
 def add_new_task(filewin):
@@ -56,6 +75,14 @@ def add_new_task(filewin):
     new_task.repeat_day = Ent[7].get()
     new_task.detail_type = Ent[8].get()
     Ann.add_task(new_task)
+    filewin.destroy()
+
+def add_new_activity(filewin):
+    '''add new task for button'''
+    name = Ent[0].get()
+    type0 = Ent[1].get()    
+    detail_type = Ent[2].get()
+    Cnn.add_activity(name, type0, detail_type)
     filewin.destroy()
 
 def refresh_today():
@@ -338,6 +365,16 @@ def show_today_cal():
     button = Button(TOP, text="update efficience",command=update_eff)
     button.grid(row=0,column=3)
 
+def report_week():
+    '''Report for this week'''
+    global CURRENTDAY
+    Rnn.weekly(CURRENTDAY.isocalendar()[1])
+
+def report_tracker():
+    '''report for habit tracker'''
+    global CURRENTDAY
+    Rnn.weekly_summary(CURRENTDAY.isocalendar()[1])
+
 def export_to_csv():
     '''export to csv'''
     date = CURRENTDAY.date()+datetime.timedelta(days=1)
@@ -375,20 +412,29 @@ def init_menu(top):
     calendarmenu.add_command(label="Tomorrow", command=assign_tomorrow)
     calendarmenu.add_separator()
     calendarmenu.add_command(label="Return to yesterday", command=assign_yesterday)
+    calendarmenu.add_command(label="Add activity", command=add_activity)
     menubar.add_cascade(label="Calendar", menu=calendarmenu)
+    reportmenu = Menu(menubar, tearoff=0)
+    reportmenu.add_command(label="This week summary", command=report_week)
+    reportmenu.add_command(label="This week task tracker", command=report_tracker)
+     
+    
+    menubar.add_cascade(label="Report", menu=reportmenu)
     return menubar
 
 
 
 if __name__ == "__main__":
     root = tkinter.Tk()
-    root.geometry('800x600+0+0')
+    root.geometry('800x600+100+0')
     TOP = Frame(root)
     MENUBAR = init_menu(root)
     TOP.pack()
     root.config(menu=MENUBAR)
     Ann = Tasklist("winter_holiday")
+    #Ann = Tasklist("new_term")
     Cnn = Cal()
+    Rnn = Report()
     CheckVar = []
     Checkbox = []
     Ent = []
