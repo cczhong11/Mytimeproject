@@ -287,6 +287,7 @@ def add_tomorrow():
 
 def update_eff():
     '''update for efficience button'''
+    global  CURRENTDAY
     for i in range(len(Cnn.Titems)):
         thing = Ent[i].get().split(";")
         eff = int(thing[0])
@@ -303,7 +304,7 @@ def update_eff():
         duration = round(duration*eff/10)
         Ta = Ann.find_by_name(name)
         if Ta != -1:
-            Ann.done_task(Ta,duration)
+            Ann.done_task(Ta,duration,now0=CURRENTDAY)
 
 def assign_yesterday():
     '''assign global varible CURRENTDAY to yesterday'''

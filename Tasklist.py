@@ -126,13 +126,13 @@ class Tasklist(object):
         result = cu0.fetchone()
         return result
 
-    def done_task(self, task, addtime=1):
+    def done_task(self, task, addtime=1, now0= datetime.datetime.now()):
         '''add done log to log and add time to already'''
         if addtime >0:
             data0 = self.fetch_task_id(task)
             data = data0+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
-            datetime.datetime.now().strftime("%Y-%m-%d"))
-            data = (self.find_max_id(1, "id"), )+data+(datetime.datetime.now().isocalendar()[1],)
+            now0.now().strftime("%Y-%m-%d"))
+            data = (self.find_max_id(1, "id"), )+data+(now0.isocalendar()[1],)
             cu0 = self.conn.cursor()
             save_sql = "INSERT INTO log_"+self.name+ " values (?, ?, ?, ?, ?, ?)"
             cu0.execute(save_sql, data)
@@ -256,6 +256,7 @@ class Tasklist(object):
 
     def report_habit(self, taskname, ind, yom=0):
         '''get data for report'''
+        
         if yom == 0:
             sql = "Select done_time from log_"+self.name+" where name = ? and done_week = ?"
             cu0 = self.conn.cursor()
