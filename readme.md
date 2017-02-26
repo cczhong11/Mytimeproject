@@ -19,11 +19,14 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 
 ## To-do function
 
-- 统计各个任务，各个type完成的时间图表，可以按月，周。连胜次数之类的
-- 在日历中显示已有的数据，可以修改，而不是每次都是初始值
-- wanted read book sorted
-- 人生金字塔以及每周的努力
-- 显示已有的事件，自动匹配类型
+[] 统计各个任务，各个type完成的时间图表，可以按月，周。连胜次数之类的
+[] 在日历中显示已有的数据，可以修改，而不是每次都是初始值
+[] wanted read book sorted
+[] 人生金字塔以及每周的努力
+[] 显示已有的事件，自动匹配类型
+[x] 今日完成加入activity选择
+[] rescue time summary
+
 
 ### report arragement
 1. what have i done in the last week/month (bar chart)

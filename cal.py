@@ -136,7 +136,7 @@ class Cal(object):
         result = cu0.fetchall()
         cu0.close()
         self.activities = result
-    
+
     def add_activity(self, name, type0, detail_type):
         '''add new activity'''
         sql = "INSERT INTO activity values (?, ?, ?)"

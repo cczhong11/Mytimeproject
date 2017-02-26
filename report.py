@@ -115,14 +115,14 @@ class Report(object):
         #p1 = R.habit_tracker(A, get_text(A.all_task), week)
         p2 = self.where_did_i_spend_time(self.Cnn, week)
         p3 = self.what_i_have_done(self.Ann, week)
-        output_file("report_test.html", title="test")
+        output_file("report/report_pie_"+str(week)+".html", title="weekly summary")
         #show(p1)
         show(column(p2, p3))
     
     def weekly_summary(self, week):
         '''weekly habits summary'''
-        output_file("report_test2.html", title="test")
-        p1 = self.habit_tracker(self.Ann, get_text(self.Ann.all_task), week)
+        output_file("report/report_tracker_"+str(week)+".html", title="habit tracker")
+        p1 = self.habit_tracker(self.Ann, self.Ann.get_this_week(week), week)
         show(p1)
 #---------------------------------------------------------
 def get_time_delta(tup):
@@ -145,8 +145,8 @@ def from_tup_to_list(tup):
     return b
 def test_f():    
     R = Report()
-    R.weekly(7)
-    R.weekly_summary(7)
+    R.weekly(8)
+    R.weekly_summary(8)
 if __name__ == "__main__":
     test_f()
 

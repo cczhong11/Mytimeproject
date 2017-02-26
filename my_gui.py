@@ -83,6 +83,7 @@ def add_new_activity(filewin):
     type0 = Ent[1].get()    
     detail_type = Ent[2].get()
     Cnn.add_activity(name, type0, detail_type)
+    Cnn.fetch_activity()
     filewin.destroy()
 
 def refresh_today():
@@ -90,9 +91,9 @@ def refresh_today():
     for index in range(len(Ann.today)):
         if CheckVar[index].get() == 1:
             if Ent[index].get() != '':
-                Ann.done_task(Ann.today[index], int(Ent[index].get()))
+                Ann.done_task(Ann.today[index], int(Ent[index].get()), day0=CURRENTDAY)
             else:
-                Ann.done_task(Ann.today[index])
+                Ann.done_task(Ann.today[index], day0=CURRENTDAY)
 
     show_today()
 
@@ -101,7 +102,7 @@ def show_today():
     #todaywin = Toplevel(TOP)
     destory_all(TOP)
     b_refresh = Button(TOP, text="Refreash", command=refresh_today)    
-    Ann.add_to_today()
+    Ann.add_to_today(CURRENTDAY)
     CheckVar.clear()
     Checkbox.clear()
     Ent.clear()
@@ -126,7 +127,7 @@ def show_tomorrow():
     Labels.clear()
     StringVars.clear()
     i = 0
-    Ann.add_to_tomorrow()
+    Ann.add_to_tomorrow(CURRENTDAY)
     #todaywin.geometry('800x600+0+0')
     for task in Ann.today:
         StringVars.append(StringVar())
@@ -226,7 +227,7 @@ def assign_tomorrow():
     Ent.clear()
     i = 0
     Ann.add_to_tomorrow()
-    Cnn.fetch_activity()
+    
     #todaywin.geometry('800x600+0+0')
     for task in Ann.today:
         StringVars.append(StringVar())
@@ -250,7 +251,7 @@ def assign_tomorrow():
         Labels[m1+i].grid(row=i,column=1)
         i += 1
     m2 = i
-    
+
     for i in range(m2):
         Ent.append(Entry(TOP))
         Ent[i].grid(row=i, column=2)
@@ -324,6 +325,13 @@ def update_eff():
             ntit.type = thing[2]
             ntit.detail_type = thing[3]
             Cnn.update_efficience(Cnn.Titems[i], eff, ntit)
+        elif len(thing) == 2:
+            ntit = copy_t(Cnn.Titems[i])            
+            k = int(thing[1])-100
+            ntit.set_name(Cnn.activities[k][0])
+            ntit.type = Cnn.activities[k][1]
+            ntit.detail_type = Cnn.activities[k][2]
+            Cnn.update_efficience(Cnn.Titems[i], eff, ntit)
         else:
             Cnn.update_efficience(Cnn.Titems[i], eff)
         name = Cnn.Titems[i].get_name()
@@ -362,8 +370,16 @@ def show_today_cal():
         Ent.append(Entry(TOP))
         Ent[i].grid(row=i, column=2)
         i += 1
+    m3 = i
+    i = 0
+    for task in Cnn.activities:
+       StringVars.append(StringVar())
+       Labels.append(Label(TOP, textvariable=StringVars[m3+i]))
+       StringVars[m3+i].set(str(i+100)+":"+task[0])
+       Labels[m3+i].grid(row=i, column=3)
+       i += 1
     button = Button(TOP, text="update efficience",command=update_eff)
-    button.grid(row=0,column=3)
+    button.grid(row=0,column=4)
 
 def report_week():
     '''Report for this week'''
@@ -435,6 +451,7 @@ if __name__ == "__main__":
     #Ann = Tasklist("new_term")
     Cnn = Cal()
     Rnn = Report()
+    Cnn.fetch_activity()
     CheckVar = []
     Checkbox = []
     Ent = []

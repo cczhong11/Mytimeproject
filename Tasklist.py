@@ -126,13 +126,13 @@ class Tasklist(object):
         result = cu0.fetchone()
         return result
 
-    def done_task(self, task, addtime=1, now0= datetime.datetime.now()):
+    def done_task(self, task, addtime=1, day0= datetime.datetime.now()):
         '''add done log to log and add time to already'''
         if addtime >0:
             data0 = self.fetch_task_id(task)
             data = data0+(task.get_name(), task.deadline.strftime("%Y-%m-%d"),\
-            now0.now().strftime("%Y-%m-%d"))
-            data = (self.find_max_id(1, "id"), )+data+(now0.isocalendar()[1],)
+            day0.strftime("%Y-%m-%d"))
+            data = (self.find_max_id(1, "id"), )+data+(day0.isocalendar()[1],)
             cu0 = self.conn.cursor()
             save_sql = "INSERT INTO log_"+self.name+ " values (?, ?, ?, ?, ?, ?)"
             cu0.execute(save_sql, data)
@@ -177,14 +177,14 @@ class Tasklist(object):
         print("---------------------------")
 
 
-    def add_to_today(self):
+    def add_to_today(self,day0=datetime.datetime.today()):
         '''add all item should be done today'''
         sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
         cu0 = self.conn.cursor()
         cu0.execute(sql)
         result = cu0.fetchall()
         sql_id = "Select task_id from log_"+self.name+" where done_time = '"+\
-        datetime.datetime.today().strftime("%Y-%m-%d")+"'"
+        day0.strftime("%Y-%m-%d")+"'"
         cu0.execute(sql_id)
         result_id = cu0.fetchall()
         self.today.clear()
@@ -200,7 +200,7 @@ class Tasklist(object):
                 self.today.append(task)
         cu0.close()
 
-    def add_to_tomorrow(self):
+    def add_to_tomorrow(self, day0=datetime.datetime.now()):
         '''add all item should be done today'''
         sql = "Select * from "+self.name+" where finished = 0 order by deadline ASC"
         cu0 = self.conn.cursor()
@@ -210,8 +210,8 @@ class Tasklist(object):
 
         for task in result:
             task = from_tuple(task)
-            day = (task.deadline - datetime.datetime.now()).days
-            if (task.deadline - datetime.datetime.today()).days-1 < 1:
+            day = (task.deadline - day0).days
+            if (task.deadline - day0).days-1 < 1:
                 self.today.append(task)
             elif (day-1)%task.repeat_day == 0:
                 self.today.append(task)
@@ -256,7 +256,6 @@ class Tasklist(object):
 
     def report_habit(self, taskname, ind, yom=0):
         '''get data for report'''
-        
         if yom == 0:
             sql = "Select done_time from log_"+self.name+" where name = ? and done_week = ?"
             cu0 = self.conn.cursor()
@@ -296,7 +295,28 @@ class Tasklist(object):
             cu0.execute(sql, )
             result = cu0.fetchall()
         return result
-        
+
+    def get_this_week(self, ind, yom=0):
+       '''return a list name of task what i done in the last week'''
+       all_sql = "Select name from log_"+self.name
+       lsql = " union select name from "+self.name+" where finished=0"
+       if yom == 0:
+           sql = all_sql + " where done_week = ?"+lsql
+           cu0 = self.conn.cursor()
+           cu0.execute(sql,(ind, ))
+           result = cu0.fetchall()
+       elif yom == 1:
+           sql = all_sql +" where done_time >= ? and done_time < ?"+lsql
+           cu0 = self.conn.cursor()
+           nm  = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 1).strftime("%Y-%M-%d")
+           cu0.execute(sql, (ind, nm, ))
+           result = cu0.fetchall()
+       else:
+           sql = all_sql +lsql
+           cu0 = self.conn.cursor()
+           cu0.execute(sql, )
+           result = cu0.fetchall()
+       return [a[0] for a in result]
 
 def add_months(sourcedate,months):
     '''date util'''
@@ -309,6 +329,7 @@ def add_months(sourcedate,months):
 
 if __name__ == "__main__":
     A = Tasklist("winter_holiday")
+    print(A.get_this_week(8))
     print(A.report_habit("GEB","2017-02-01",1))
 
     while 1:
