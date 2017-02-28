@@ -12,12 +12,12 @@ import numpy as np
 
 class Report(object):
     '''report class'''
-    def __init__(self):
+    def __init__(self,ann):
         self.xname = []
         self.yname = []
         self.color = []
         self.alpha = []
-        self.Ann = Tasklist("winter_holiday")
+        self.Ann = ann
         self.Cnn = Cal()        
         self.Ann.add_to_all()
 

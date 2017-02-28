@@ -63,7 +63,7 @@ class Tasklist(object):
                           `tasklistname` varchar(20) DEFAULT NULL,\
                           `task_type` varchar(20) DEFAULT NULL,\
                           `week` int(5) DEFAULT 0,\
-                          `already_time` int(5) DEFAULT 0,\
+                          `already_time` varchar(20) DEFAULT 0,\
                           `expected_time` int(5) DEFAULT 0,\
                           `finished` BOOLEAN DEFAULT FALSE,\
                           `repeated_day` int(5) DEFAULT 0,\

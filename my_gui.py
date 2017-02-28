@@ -9,6 +9,8 @@ from Titem import *
 from tkinter import messagebox
 from report import Report
 CURRENTDAY = datetime.datetime.now()
+ssss = 0
+Ann = Tasklist("new_term")
 def destory_all(frame0):
     '''destory all widget'''
     for widget in frame0.winfo_children():
@@ -91,7 +93,7 @@ def refresh_today():
     for index in range(len(Ann.today)):
         if CheckVar[index].get() == 1:
             if Ent[index].get() != '':
-                Ann.done_task(Ann.today[index], int(Ent[index].get()), day0=CURRENTDAY)
+                Ann.done_task(Ann.today[index], float(Ent[index].get()), day0=CURRENTDAY)
             else:
                 Ann.done_task(Ann.today[index], day0=CURRENTDAY)
 
@@ -336,10 +338,10 @@ def update_eff():
             Cnn.update_efficience(Cnn.Titems[i], eff)
         name = Cnn.Titems[i].get_name()
         duration = (Cnn.Titems[i].end_time-Cnn.Titems[i].start_time).seconds/3600
-        duration = round(duration*eff/10)
+        duration = duration*eff/10
         Ta = Ann.find_by_name(name)
         if Ta != -1:
-            Ann.done_task(Ta,duration,day0=CURRENTDAY)
+            Ann.done_task(Ta,(duration),day0=CURRENTDAY)
 
 def assign_yesterday():
     '''assign global varible CURRENTDAY to yesterday'''
@@ -348,7 +350,7 @@ def assign_yesterday():
     messagebox.showinfo("Message", "Ok!")
 
 def show_today_cal():
-    '''show today cal'''
+    '''show today cal'''    
     destory_all(TOP)
     Labels.clear()
     StringVars.clear()
@@ -399,6 +401,7 @@ def export_to_csv():
     messagebox.showinfo("Message", day+"Ok!")
 
 
+
 def init_menu(top):
     '''initialize Menu'''
     menubar = Menu(top)
@@ -422,6 +425,8 @@ def init_menu(top):
     taskmenu.add_command(label="Show with prority and urgent", command=donothing)
     taskmenu.add_command(label="Finished tasks", command=finish_task)
     taskmenu.add_command(label="Show all tasks", command=show_all)
+    if ssss == 1:
+        taskmenu.add_command(label="Switch to other tasklist", command=switch_t)
     menubar.add_cascade(label="Tasks", menu=taskmenu)
     calendarmenu = Menu(menubar, tearoff=0)
     calendarmenu.add_command(label="Today", command=show_today_cal)
@@ -438,7 +443,12 @@ def init_menu(top):
     menubar.add_cascade(label="Report", menu=reportmenu)
     return menubar
 
-
+def switch_t():
+    global Ann
+    if Ann.name == "winter_holiday":
+        Ann = Tasklist("new_term")
+    else:
+     Ann = Tasklist("winter_holiday")
 
 if __name__ == "__main__":
     root = tkinter.Tk()
@@ -447,10 +457,11 @@ if __name__ == "__main__":
     MENUBAR = init_menu(root)
     TOP.pack()
     root.config(menu=MENUBAR)
-    Ann = Tasklist("winter_holiday")
+    #Ann = Tasklist("winter_holiday")
     #Ann = Tasklist("new_term")
+    
     Cnn = Cal()
-    Rnn = Report()
+    Rnn = Report(Ann)
     Cnn.fetch_activity()
     CheckVar = []
     Checkbox = []

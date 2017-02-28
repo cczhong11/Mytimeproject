@@ -11,7 +11,7 @@ class Task(Thing):
         self.deadline = datetime.datetime.strptime(deadline, "%Y-%m-%d")
         self.task_type = None
         self.week = self.deadline.isocalendar()[1]
-        self.already_time = 0
+        self.already_time = '0'
         self.priority = 0
         self.expected_time = 0
         self.tasklistname = tasklistname
@@ -25,7 +25,7 @@ class Task(Thing):
 
     def print_time_summary(self):
         '''this method can printout time summary for task'''
-        print("taskname:%s \t;you expected spent %d hours;\t you spent %d hours" \
+        print("taskname:%s \t;you expected spent %d hours;\t you spent %s hours" \
         % (self.get_name(), self.expected_time, self.already_time))
 
     def print_simple_summary(self):
@@ -44,13 +44,14 @@ class Task(Thing):
 
     def add_hours(self, add_time=1):
         '''Add time for a task'''
-        self.already_time = self.already_time + add_time
+        a = float(self.already_time) + add_time
+        self.already_time = str(a)
         self.donetime.append(datetime.datetime.now())
 
     def is_overtime(self):
         '''judge whether task is over time'''
         if self.finished != True:
-            if self.already_time > self.expected_time:
+            if float(self.already_time) > self.expected_time:
                 return True
         return False
     def get_all(self):
