@@ -111,7 +111,6 @@ class Report(object):
 
     def weekly(self, week):
         '''weekly summary'''
-        
         #p1 = R.habit_tracker(A, get_text(A.all_task), week)
         p2 = self.where_did_i_spend_time(self.Cnn, week)
         p3 = self.what_i_have_done(self.Ann, week)

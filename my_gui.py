@@ -339,7 +339,7 @@ def update_eff():
         duration = round(duration*eff/10)
         Ta = Ann.find_by_name(name)
         if Ta != -1:
-            Ann.done_task(Ta,duration,now0=CURRENTDAY)
+            Ann.done_task(Ta,duration,day0=CURRENTDAY)
 
 def assign_yesterday():
     '''assign global varible CURRENTDAY to yesterday'''
