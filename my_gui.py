@@ -459,7 +459,7 @@ if __name__ == "__main__":
     root.config(menu=MENUBAR)
     #Ann = Tasklist("winter_holiday")
     #Ann = Tasklist("new_term")
-    
+     
     Cnn = Cal()
     Rnn = Report(Ann)
     Cnn.fetch_activity()
