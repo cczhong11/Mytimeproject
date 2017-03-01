@@ -43,6 +43,9 @@ def copy_t(tit):
 def from_task(task):
     '''turn task to Titem'''
     newT = Titem(task.get_name())
+    newT.detail_type = task.detail_type
+    newT.type = task.task_type
+    return newT
 
 def from_tuple_t(tup):
     '''TURN titem TUPLE TO SQL'''

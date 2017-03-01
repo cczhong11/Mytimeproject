@@ -92,8 +92,25 @@ def refresh_today():
     '''get new today'''
     for index in range(len(Ann.today)):
         if CheckVar[index].get() == 1:
-            if Ent[index].get() != '':
-                Ann.done_task(Ann.today[index], float(Ent[index].get()), day0=CURRENTDAY)
+            thing = Ent[index].get()
+            if  thing != '':
+                if thing.split(';')==1:
+                    Ann.done_task(Ann.today[index], float(Ent[index].get()), day0=CURRENTDAY)
+                else:
+                    things = thing.split(';')
+                    Ann.done_task(Ann.today[index], float(things[0]), day0=CURRENTDAY)
+                    times = things[1].split('-')
+                    date = CURRENTDAY.date()
+                    time1 = datetime.datetime.strptime(times[0],"%H:%M")
+                    time2 = datetime.datetime.strptime(times[1],"%H:%M")
+                    newT = from_task(Ann.today[index])
+                    newT.start_time = time1.replace(year=date.year, month=date.month, day=date.day)
+                    newT.end_time = time2.replace(year=date.year, month=date.month, day=date.day)
+                    Cnn.add_Titems(newT)
+                    if len(things)==3:
+                        Cnn.update_efficience(newT, int(things[2]))
+                    else:
+                        Cnn.update_efficience(newT, 10)
             else:
                 Ann.done_task(Ann.today[index], day0=CURRENTDAY)
 
