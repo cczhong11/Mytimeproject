@@ -24,7 +24,7 @@ def donothing():
 
 def add_newtask():
     '''add new task'''
-    filewin = Toplevel(TOP)    
+    filewin = Toplevel(TOP)
     string_task = ['name','deadline(YYYY-MM-DD)','type(study,life,work,other)',\
     'priority','urgent','expected_time','tasklist(to do, later watch)','repeated_day', 'detail_type']
     Labels.clear()
@@ -94,7 +94,7 @@ def refresh_today():
         if CheckVar[index].get() == 1:
             thing = Ent[index].get()
             if  thing != '':
-                if thing.split(';')==1:
+                if len(thing.split(';'))==1:
                     Ann.done_task(Ann.today[index], float(Ent[index].get()), day0=CURRENTDAY)
                 else:
                     things = thing.split(';')
@@ -113,7 +113,6 @@ def refresh_today():
                         Cnn.update_efficience(newT, 10)
             else:
                 Ann.done_task(Ann.today[index], day0=CURRENTDAY)
-
     show_today()
 
 def show_today():
@@ -294,32 +293,33 @@ def add_tomorrow():
     tits = []
     for i in range(24):
         thing = Ent[i].get()
-        ntype =''
-        ndtype=''
-        if thing.isdigit() is True:
-            if int(thing) <100:
-                thing = StringVars[int(thing)].get().split(":")[1]
-                ntask = Ann.find_by_name(thing)
-                ntype = ntask.task_type
-                ndtype = ntask.detail_type
+        if len(thing)!=0:
+            ntype =''
+            ndtype=''
+            if thing.isdigit() is True:
+                if int(thing) <100:
+                    thing = StringVars[int(thing)].get().split(":")[1]
+                    ntask = Ann.find_by_name(thing)
+                    ntype = ntask.task_type
+                    ndtype = ntask.detail_type
+                else:
+                    k = int(thing)-100
+                    thing = Cnn.activities[k][0]
+                    ntype = Cnn.activities[k][1]
+                    ndtype = Cnn.activities[k][2]
             else:
-                k = int(thing)-100
-                thing = Cnn.activities[k][0]
-                ntype = Cnn.activities[k][1]
-                ndtype = Cnn.activities[k][2]
-        else:
-            if len(thing.split(";")) == 3:
-                things = thing.split(";")
-                thing = things[0]
-                ntype = things[1]
-                ndtype = things[2]
-        time = datetime.datetime.strptime(StringVars[m1+i].get(),"%H:%M")
-        tit = Titem(thing)
-        tit.start_time =  time.replace(year=date.year, month=date.month, day=date.day)
-        tit.end_time = tit.start_time+datetime.timedelta(minutes=30)
-        tit.type = ntype
-        tit.detail_type = ndtype
-        tits.append(tit)
+                if len(thing.split(";")) == 3:
+                    things = thing.split(";")
+                    thing = things[0]
+                    ntype = things[1]
+                    ndtype = things[2]
+            time = datetime.datetime.strptime(StringVars[m1+i].get(),"%H:%M")
+            tit = Titem(thing)
+            tit.start_time =  time.replace(year=date.year, month=date.month, day=date.day)
+            tit.end_time = tit.start_time+datetime.timedelta(minutes=30)
+            tit.type = ntype
+            tit.detail_type = ndtype
+            tits.append(tit)
     j = 0
     for i in range(23):
         tit1 = tits[j]

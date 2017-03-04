@@ -15,6 +15,7 @@ class Cal(object):
 
     def add_Titems(self, titem,real=0):
         '''insert a item to sql'''
+        
         newt = titem.get_all()
         cu0 =  self.conn.cursor()
         result = (self.find_max_id(),)
