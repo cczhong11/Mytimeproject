@@ -9,6 +9,7 @@ from cal import Cal
 import datetime
 import pandas as pd
 import numpy as np
+from rescuetime import *
 
 class Report(object):
     '''report class'''
@@ -105,6 +106,23 @@ class Report(object):
     def reading_progress(self, tasklist):
         '''rect chart'''
 
+    def rescuetime_result(self, week,ind=0):
+        '''print data'''
+        if ind==0:
+            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(week-1))
+            result = get_all_from_rescuetime([nstart + datetime.timedelta(days=i) for i in range(0 - nstart.weekday(), 7 - nstart.weekday())])
+            p11 = figure(width=400, height=200)
+            p11.vbar(x=result[0], width=0.2, bottom=0,
+                top=result[1], color="firebrick")
+            p12 = figure(width=400, height=200)
+            p12.vbar(x=result[0], width=0.2, bottom=0,
+                top=result[2], color="firebrick")
+            p13 = figure(width=400, height=200)
+            p13.vbar(x=result[0], width=0.2, bottom=0,
+                top=result[3], color="firebrick")
+        return (p11,p12,p13)
+
+
     def clear_list(self):
         '''clear all list'''
         self.xname.clear()
@@ -118,8 +136,9 @@ class Report(object):
         p2 = self.where_did_i_spend_time(self.Cnn, week)
         p3 = self.what_i_have_done(self.Ann, week)
         output_file("report/report_pie_"+str(week)+".html", title="weekly summary")
+        p4=self.rescuetime_result(week)
         #show(p1)
-        show(column(p2, p3))
+        show(column(p2, p3,p4[0],p4[1],p4[2]))
     
     def weekly_summary(self, week):
         '''weekly habits summary'''
@@ -148,7 +167,7 @@ def from_tup_to_list(tup):
 def test_f():    
     R = Report(Tasklist("new_term"))
     R.weekly(9)
-    R.weekly_summary(9)
+    #R.weekly_summary(9)
 if __name__ == "__main__":
     test_f()
 

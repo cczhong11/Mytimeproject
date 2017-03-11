@@ -4,7 +4,8 @@ import datetime
 import json
 import sqlite3
 import csv
-
+from decimal import *
+getcontext().prec = 3
 apikey = 'B639kTMYdfFanKzSRlarPeLnKgR1zt_4ZkuHRbDS'
 conn = sqlite3.connect('rescuetime/rescue_time.sqlite')
 samsung_api='B63UW63A9a_O6fCEOfzMxAd0Gl2ANxChWZ082NKg'
@@ -81,10 +82,7 @@ def init():
                            'Category' varchar(20) DEFAULT NULL, \
                            'Productivity' varchar(20) DEFAULT NULL, \
                            PRIMARY KEY (`id`))"
-                          
-    
-    
-    
+           
     cu = conn.cursor()
     cu.execute(create_table_sql)
     conn.commit()
@@ -93,17 +91,24 @@ def init():
     cu.close()
 
 def find_max_id():
-        '''get max id in two different table'''
-        cu0 = conn.cursor()        
-        find_max_index = "SELECT MAX(id) FROM day_note"
-        try:
-            cu0.execute(find_max_index)
-            result = int(cu0.fetchone()[0])
-        except:
-            result = -1
-        cu0.close()
-        return result+1
-
+    '''get max id in two different table'''
+    cu0 = conn.cursor()        
+    find_max_index = "SELECT MAX(id) FROM day_note"
+    try:
+        cu0.execute(find_max_index)
+        result = int(cu0.fetchone()[0])
+    except:
+        result = -1
+    cu0.close()
+    return result+1
+def find_last_day():
+    '''get last day'''
+    cu0 = conn.cursor() 
+    find_max_index = "SELECT * FROM day_note where id=(SELECT MAX(id) FROM day_note)"
+    cu0.execute(find_max_index)
+    result = cu0.fetchone()[1].split('T')[0]
+    cu0.close()
+    return result
 def get_daily_summary(day):
     '''get daily summay and save into sqlite'''
     url = "https://www.rescuetime.com/anapi/daily_summary_feed?key="
@@ -140,11 +145,74 @@ def download_csv(day):
         
         cu.close()
 
-if __name__ == "__main__":
-    init()
+def get_day_hour(day,hour):
+    '''get day and hour from sql'''
+    string2 = day.strftime("%Y-%m-%d")+'T'+hour.strftime("%H:%M:%S")
+    print(string2)
+    find_sql = "select * from day_note where date=?"
+    cu = conn.cursor()
+    cu.execute(find_sql, (string2,))
+    result = cu.fetchall()
+    efftime = 0
+    sumtime = 0
+    inefftime=0    
+    if len(result)==0:
+        return -1
+    for one in result:
+        time = int(one[2])
+        sumtime += time
+        if one[6] == '1' or one[6] == '2':
+            efftime += time
+        elif one[6] == '-1' or one[6] == '-2':
+            inefftime += time
+    return (sumtime/60, efftime/sumtime, inefftime/sumtime)
+
+def get_hour(day,hour):
+    '''get all day with same hour'''
+    avgs=0
+    avge=0
+    avgi=0
+    N  = 0
+    for one in day:
+        result = get_day_hour(one,hour)
+        if result==-1:
+            continue
+        if N == 0:
+            avgs = result[0]
+            avge = result[1]
+            avgi = result[2]
+        else:
+            avgs = avgs*(1-1/(N+1))+result[0]/(N+1)
+            avge = avge*(1-1/(N+1))+result[1]/(N+1)
+            avgi = avgi*(1-1/(N+1))+result[2]/(N+1)
+        N = N+1
+    return(avgs, avge, avgi)
+
+def get_all_from_rescuetime(day):
+    '''get data for report'''
+    hour = datetime.datetime(year=2000,month=1,day=1,hour=8)
+    alltime=[]
+    allsum=[]
+    alleff=[]
+    allineff=[]
+    for time in range(16):
+        nhour = hour+datetime.timedelta(hours=time)
+        result = get_hour(day, nhour)
+        alltime.append(time+8)#nhour.strftime("%H:%M:%S"))
+        allsum.append(result[0])
+        alleff.append(result[1])
+        allineff.append(result[2])
+    return alltime,allsum,alleff,allineff
+
+def fetch_data():
+    '''fetch from web'''
     get_daily_summary(1)
-    a = datetime.datetime(2017,3,8)
+    a = datetime.datetime.strptime(find_last_day(),'%Y-%m-%d')
     l = (datetime.datetime.now()-a).days
-    for i in range(l):
+    for i in range(1,l):
         b = a+datetime.timedelta(days=i)
         download_csv(b.strftime("%Y-%m-%d"))
+
+if __name__ == "__main__":
+    init()
+    fetch_data
