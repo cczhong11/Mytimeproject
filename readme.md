@@ -30,7 +30,7 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 * [ ] 显示已有的事件，自动匹配类型
 * [x] 今日完成加入activity选择
 * [x] rescue time summary
-* [ ] cal add this task purpose!
+* [ ] cal add this task aim!
 
 
 ### report arragement

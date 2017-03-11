@@ -28,8 +28,8 @@ class Report(object):
         for one in result:
             self.xname.append(one[0])
             self.yname.append(one[1])
-            dot = figure(title="what i have done", tools="", toolbar_location=None,
-                        x_range=[0, max(self.yname)], y_range=self.xname)
+        
+        dot = figure(title="what i have done", tools="", toolbar_location=None, x_range=[0, max(self.yname)], y_range=self.xname)
 
         dot.segment(0,self.xname, self.yname, self.xname,  line_width=2, line_color="green", )
         dot.circle( self.yname,self.xname, size=15, fill_color="orange", line_color="green", line_width=3, )
@@ -91,7 +91,10 @@ class Report(object):
         result = cal.report_doing(ind, yom)
         result = [get_time_delta(one) for one in result]        
         df = pd.DataFrame(result, columns=['type', 'detail_type', 'duration'])        
-        d = Donut(df, label=['type','detail_type'], values='duration',text_font_size='6pt')
+        source = ColumnDataSource({'type': list(df['type']),'detail_type':list(df['detail_type']), 'duration':list(df['duration'])})       
+        grouped = df.groupby(['type', 'detail_type']).sum()
+        grouped.to_csv("report/report_time_week_"+str(ind)+".csv", sep='\t', encoding='utf-8')
+        d = Donut(data=df, label=['type','detail_type'], values='duration',text_font_size='6pt')
         d.plot_width = 800
         d.plot_height = 600
         return(d)
@@ -143,9 +146,9 @@ def from_tup_to_list(tup):
         b.append(j[0])        
     return b
 def test_f():    
-    R = Report()
-    R.weekly(8)
-    R.weekly_summary(8)
+    R = Report(Tasklist("new_term"))
+    R.weekly(9)
+    R.weekly_summary(9)
 if __name__ == "__main__":
     test_f()
 

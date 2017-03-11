@@ -143,7 +143,7 @@ def download_csv(day):
 if __name__ == "__main__":
     init()
     get_daily_summary(1)
-    a = datetime.datetime(2017,3,2)
+    a = datetime.datetime(2017,3,8)
     l = (datetime.datetime.now()-a).days
     for i in range(l):
         b = a+datetime.timedelta(days=i)
