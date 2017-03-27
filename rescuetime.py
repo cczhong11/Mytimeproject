@@ -126,6 +126,7 @@ def get_daily_summary(day):
             conn.commit()
         except:
             cu.close()    
+            break
     
 def download_csv(day):
     '''download csv'''
@@ -148,7 +149,7 @@ def download_csv(day):
 def get_day_hour(day,hour):
     '''get day and hour from sql'''
     string2 = day.strftime("%Y-%m-%d")+'T'+hour.strftime("%H:%M:%S")
-    print(string2)
+    
     find_sql = "select * from day_note where date=?"
     cu = conn.cursor()
     cu.execute(find_sql, (string2,))
@@ -215,4 +216,4 @@ def fetch_data():
 
 if __name__ == "__main__":
     init()
-    fetch_data
+    fetch_data()

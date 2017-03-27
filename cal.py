@@ -184,6 +184,23 @@ class Cal(object):
         result = cu0.fetchall()
         return result
 
+    def report_ineff(self, ind, yom=0,ineff=1):
+        '''for pie chart with type'''
+        if ineff==1:
+            sql = "select name, count(name) from calendar where efficient < 5 "
+        if ineff==0:
+            sql = "select name, count(name) from real_calendar where efficient = 10 "
+        cu0 = self.conn.cursor()
+        if yom==2: #for all time
+            cu0.execute(sql)
+        elif yom == 0:
+            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nend = nstart + datetime.timedelta(days=6)
+            sql = sql + "and start_day >= ? and start_day < ? Group BY name Order By count(name)"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            cu0.execute(sql, data)
+        result = cu0.fetchall()
+        return result
 
     def write_to_csv(self, day0):
         '''write 2 csv file'''

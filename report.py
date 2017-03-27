@@ -94,14 +94,39 @@ class Report(object):
         df = pd.DataFrame(result, columns=['type', 'detail_type', 'duration'])        
         source = ColumnDataSource({'type': list(df['type']),'detail_type':list(df['detail_type']), 'duration':list(df['duration'])})       
         grouped = df.groupby(['type', 'detail_type']).sum()
-        grouped.to_csv("report/report_time_week_"+str(ind)+".csv", sep='\t', encoding='utf-8')
+        grouped.to_csv("report/report_time_week_"+str(ind)+".csv", encoding='utf-8')
         d = Donut(data=df, label=['type','detail_type'], values='duration',text_font_size='6pt')
         d.plot_width = 800
         d.plot_height = 600
         return(d)
 
-    def efficient_time(self, cal):
-        '''box chart'''
+    def efficient_time(self, cal,ind,yom=0):
+        '''dot chart for my inefficient time'''        
+        xname1=[]
+        yname1=[]
+        result = cal.report_ineff(ind)
+        print(result)
+        for one in result:
+            xname1.append(one[0])
+            yname1.append(one[1])
+        
+        dot1 = figure(title="what i did not do", tools="", toolbar_location=None, x_range=[0, max(yname1)], y_range=xname1)
+
+        dot1.segment(0,xname1, yname1, xname1,  line_width=2, line_color="green", )
+        dot1.circle( yname1,xname1, size=15, fill_color="orange", line_color="green", line_width=3, )
+        xname2=[]
+        yname2=[]
+        result = cal.report_ineff(ind,ineff=0)
+        for one in result:
+            xname2.append(one[0])
+            yname2.append(one[1])
+        
+        dot2 = figure(title="what i real do", tools="", toolbar_location=None, x_range=[0, max(yname2)], y_range=xname2)
+
+        dot2.segment(0,xname2, yname2, xname2,  line_width=2, line_color="green", )
+        dot2.circle( yname2,xname2, size=15, fill_color="orange", line_color="green", line_width=3, )
+        
+        return (dot1,dot2)
 
     def reading_progress(self, tasklist):
         '''rect chart'''
@@ -111,13 +136,13 @@ class Report(object):
         if ind==0:
             nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(week-1))
             result = get_all_from_rescuetime([nstart + datetime.timedelta(days=i) for i in range(0 - nstart.weekday(), 7 - nstart.weekday())])
-            p11 = figure(width=400, height=200)
+            p11 = figure(title="on computer time",width=400, height=200)
             p11.vbar(x=result[0], width=0.2, bottom=0,
                 top=result[1], color="firebrick")
-            p12 = figure(width=400, height=200)
+            p12 = figure(title="efficient time",width=400, height=200)
             p12.vbar(x=result[0], width=0.2, bottom=0,
                 top=result[2], color="firebrick")
-            p13 = figure(width=400, height=200)
+            p13 = figure(title="inefficient time",width=400, height=200)
             p13.vbar(x=result[0], width=0.2, bottom=0,
                 top=result[3], color="firebrick")
         return (p11,p12,p13)
@@ -137,8 +162,9 @@ class Report(object):
         p3 = self.what_i_have_done(self.Ann, week)
         output_file("report/report_pie_"+str(week)+".html", title="weekly summary")
         p4=self.rescuetime_result(week)
+        p5 = self.efficient_time(self.Cnn, week)
         #show(p1)
-        show(column(p2, p3,p4[0],p4[1],p4[2]))
+        show(column(p2, p3,p4[0],p4[1],p4[2],p5[0],p5[1]))
     
     def weekly_summary(self, week):
         '''weekly habits summary'''
