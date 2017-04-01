@@ -471,6 +471,13 @@ if __name__ == "__main__":
     root = tkinter.Tk()
     root.geometry('800x600+100+0')
     TOP = Frame(root)
+    Labels = []
+    StringVars = []
+    StringVars.append(StringVar())
+    Labels.append(Label(TOP, textvariable=StringVars[0]))
+    td = datetime.datetime(2017,6,23)-datetime.datetime.now()
+    StringVars[0].set("毕业还有："+str(td.days))
+    Labels[0].grid(row=1, column=0)
     MENUBAR = init_menu(root)
     TOP.pack()
     root.config(menu=MENUBAR)
@@ -483,8 +490,7 @@ if __name__ == "__main__":
     CheckVar = []
     Checkbox = []
     Ent = []
-    Labels = []
-    StringVars = []
+    
     Lb1 = Listbox(TOP)
     frame2 = Frame(TOP)
     root.mainloop()
