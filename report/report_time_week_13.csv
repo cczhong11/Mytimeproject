@@ -1,0 +1,17 @@
+type,detail_type,duration
+life,eating,8.5
+life,english,4.0
+life,health,2.0
+life,notebook,2.0
+life,reading,7.0
+life,relax,0.5
+life,summary,1.5
+life,transport,1.0
+study,abroad,4.0
+study,anki,1.5
+study,english,3.5
+study,graduate,10.0
+study,mooc,4.5
+study,school,3.0
+work,job,3.0
+work,programming,4.5
