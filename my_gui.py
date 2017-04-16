@@ -296,6 +296,11 @@ def add_tomorrow():
         if len(thing)!=0:
             ntype =''
             ndtype=''
+            aim = ''
+            thing0 = thing.split("%")[0]
+            if len(thing.split("%"))>1:
+                aim = thing.split("%")[1]
+            thing = thing0
             if thing.isdigit() is True:
                 if int(thing) <100:
                     thing = StringVars[int(thing)].get().split(":")[1]
@@ -319,6 +324,7 @@ def add_tomorrow():
             tit.end_time = tit.start_time+datetime.timedelta(minutes=30)
             tit.type = ntype
             tit.detail_type = ndtype
+            tit.aim = aim
             tits.append(tit)
     j = 0
     for i in range(23):
@@ -417,6 +423,12 @@ def export_to_csv():
     Cnn.write_to_csv(day)
     messagebox.showinfo("Message", day+"Ok!")
 
+def export_to_log():
+    '''export to log'''
+    date = CURRENTDAY.date()+datetime.timedelta(days=1)
+    day = date.strftime("%Y-%m-%d")
+    Cnn.write_to_log(day)
+    messagebox.showinfo("Message", day+"Ok!")
 
 
 def init_menu(top):
@@ -427,7 +439,7 @@ def init_menu(top):
     filemenu.add_command(label="Import from csv for calendar", command=donothing)
     filemenu.add_command(label="Sync your tasks", command=donothing)
     filemenu.add_command(label="Sync your calendar", command=donothing)
-    filemenu.add_command(label="Export csv for tasks", command=donothing)
+    filemenu.add_command(label="Export csv for logs", command=export_to_log)
     filemenu.add_command(label="Export csv for calendar", command=export_to_csv)
     filemenu.add_separator()
     filemenu.add_command(label="Exit", command=top.quit)

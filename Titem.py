@@ -13,12 +13,13 @@ class Titem(Thing):
         self.type = ''
         self.detail_type=''
         self.efficient = 0
+        self.aim = ''
 
     def get_all(self):
         '''return a tuple represent all info'''
         t_all = (self.get_name(), self.start_time.strftime("%Y-%m-%d"),\
         self.end_time.strftime("%Y-%m-%d"), self.start_time.strftime("%H:%M:%S"),\
-        self.end_time.strftime("%H:%M:%S"), self.efficient, self.type, self.detail_type)
+        self.end_time.strftime("%H:%M:%S"), self.efficient, self.type, self.detail_type,self.aim)
         return t_all
 
     def combine(self, titem):
@@ -57,4 +58,5 @@ def from_tuple_t(tup):
     a.efficient = tup[6]
     a.type = tup[7]
     a.detail_type = tup[8]
+    a.aim = tup[9]
     return a

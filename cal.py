@@ -3,7 +3,7 @@
 import sqlite3
 import datetime
 from Titem import *
-
+import os.path
 class Cal(object):
     def __init__(self):
         self.Titems = []
@@ -21,7 +21,7 @@ class Cal(object):
         result = (self.find_max_id(),)
         result2 = (self.find_max_id(1),)
         if real == 0:
-            save_sql = "INSERT INTO calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            save_sql = "INSERT INTO calendar_aim values (?, ?, ?, ?, ?, ?, ?, ?, ?,?)"
             result = result + newt
         else:
             save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -36,7 +36,7 @@ class Cal(object):
         '''get max id in two different table'''
         cu0 = self.conn.cursor()
         if real == 0:
-            find_max_index = "SELECT MAX(cal_id) FROM calendar"
+            find_max_index = "SELECT MAX(cal_id) FROM calendar_aim"
         else:
             find_max_index = "SELECT MAX(cal_id) FROM real_calendar"
         try:
@@ -49,7 +49,7 @@ class Cal(object):
 
     def fetch_cal_id(self, titem):
         '''get cal_id'''
-        sql = "SELECT cal_id from calendar WHERE name = ? and start_day = ? and start_time = ?"
+        sql = "SELECT cal_id from calendar_aim WHERE name = ? and start_day = ? and start_time = ?"
         cu0 = self.conn.cursor()
         data = titem.get_all()
         data = (data[0], data[1], data[3])
@@ -59,7 +59,7 @@ class Cal(object):
 
     def update_efficience(self, titem, eff,real_titem=-1):
         '''update cal'''
-        update_sql = "UPDATE calendar SET efficient = ? WHERE cal_id = ?"
+        update_sql = "UPDATE calendar_aim SET efficient = ? WHERE cal_id = ?"
         
         data = (eff, self.fetch_cal_id(titem)[0])
         if real_titem != -1:
@@ -71,7 +71,7 @@ class Cal(object):
 
     def create_table_sql(self):
         '''create sql table'''
-        create_table_sql = "CREATE TABLE IF NOT EXISTS calendar( \
+        create_table_sql = "CREATE TABLE IF NOT EXISTS calendar_aim( \
                           `cal_id` int(11) NOT NULL,\
                           `name` varchar(100) NOT NULL,\
                           `start_day` varchar(20) DEFAULT NULL,\
@@ -81,6 +81,7 @@ class Cal(object):
                           `efficient` int(5) DEFAULT 0,\
                            `type` varchar(20) DEFAULT 0,\
                            `Deatil_type` varchar(20) DEFAULT 0,\
+                           `aim` varchar(20) DEFAULT 0,\
                           PRIMARY KEY (`cal_id`))"
         create_table_sql2 = "CREATE TABLE IF NOT EXISTS real_calendar( \
                           `cal_id` int(11) NOT NULL,\
@@ -149,7 +150,7 @@ class Cal(object):
 
     def add_all_Titems(self, day0):
         '''add all to '''
-        sql = "Select * from calendar where start_day= ?"
+        sql = "Select * from calendar_aim where start_day= ?"
         cu0 = self.conn.cursor()
         cu0.execute(sql, (day0,))
         result = cu0.fetchall()
@@ -170,7 +171,7 @@ class Cal(object):
 
     def report_doing(self, ind, yom=0):
         '''for pie chart with type'''
-        sql = "select type, Detail_type,start_time, end_time from calendar where efficient > 5 "
+        sql = "select type, Detail_type,start_time, end_time from calendar_aim where efficient > 5 "
         cu0 = self.conn.cursor()
         if yom==2: #for all time
             cu0.execute(sql)
@@ -187,7 +188,7 @@ class Cal(object):
     def report_ineff(self, ind, yom=0,ineff=1):
         '''for pie chart with type'''
         if ineff==1:
-            sql = "select name, count(name) from calendar where efficient < 5 "
+            sql = "select name, count(name) from calendar_aim where efficient < 5 "
         if ineff==0:
             sql = "select name, count(name) from real_calendar where efficient = 10 "
         cu0 = self.conn.cursor()
@@ -209,8 +210,24 @@ class Cal(object):
         f = open(file,"w+", encoding="utf-8")
         f.write("Subject, Start Date, Start Time, End Date, End Time\n")
         for one in self.Titems:
+            tup = one.get_all()            
+            str1 = '{0}, {1}, {2}, {3}, {4}'.format(str(tup[0])+' '+str(tup[8]), tup[1], tup[3], tup[2], tup[4])
+            f.write(str1+"\n")
+        f.close()
+
+    def write_to_log(self, day0):
+        '''write 2 csv log file'''
+        file = str(datetime.datetime.strptime(day0, "%Y-%M-%d").isocalendar()[1])+"_log.csv"
+        self.add_all_Titems(day0)
+        
+        if os.path.isfile("log/"+file):
+            f = open("log/"+file,"a+", encoding="utf-8")
+        else:
+            f = open("log/"+file,"w+", encoding="utf-8")
+            f.write("Subject, Start Date, Start Time, Aim, Finished result \n")
+        for one in self.Titems:
             tup = one.get_all()
-            str1 = '{0}, {1}, {2}, {3}, {4}'.format(tup[0], tup[1], tup[3], tup[2], tup[4])
+            str1 = '{0}, {1}, {2}'.format(tup[0], tup[1], tup[3])
             f.write(str1+"\n")
         f.close()
 
