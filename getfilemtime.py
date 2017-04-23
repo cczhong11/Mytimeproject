@@ -10,9 +10,10 @@ PATH='E:/sync'
 def write_this_week_work(paths,currentday):
     file = str(currentday.isocalendar()[1])+"_file_added.txt"
     f = open("log/"+file,"w+", encoding="utf-8")
+    print("i am here")
     for path in paths:
         try:
-            for i in os.walk(paths):
+            for i in os.walk(path):
                 folder = i[0]
                 folder=folder.replace("\\",r"/")
                 #print(folder)

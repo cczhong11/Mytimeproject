@@ -419,6 +419,7 @@ def report_tracker():
     Rnn.weekly_summary(CURRENTDAY.isocalendar()[1])
 
 def file_tracker():
+    global  CURRENTDAY
     getfilemtime.write_this_week_work(filelist,CURRENTDAY)
     
 def export_to_csv():

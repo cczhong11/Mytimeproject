@@ -21,6 +21,9 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
  - basic report 
  - already_time is str therefore it could record more precisely
 
+## v 0.9
+ - see file add in this week
+ - add % as aim indicator in the calendar assign
 
 ## To-do function
 
