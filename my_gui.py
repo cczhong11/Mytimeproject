@@ -8,9 +8,11 @@ import datetime
 from Titem import *
 from tkinter import messagebox
 from report import Report
+import getfilemtime
 CURRENTDAY = datetime.datetime.now()
 ssss = 0
 Ann = Tasklist("new_term")
+filelist=['E:/sync','E:/mynutcloud','E:/Coding','E:/待读','E:/毕业设计','E:/留学']
 def destory_all(frame0):
     '''destory all widget'''
     for widget in frame0.winfo_children():
@@ -416,6 +418,9 @@ def report_tracker():
     global CURRENTDAY
     Rnn.weekly_summary(CURRENTDAY.isocalendar()[1])
 
+def file_tracker():
+    getfilemtime.write_this_week_work(filelist,CURRENTDAY)
+    
 def export_to_csv():
     '''export to csv'''
     date = CURRENTDAY.date()+datetime.timedelta(days=1)
@@ -430,6 +435,7 @@ def export_to_log():
     Cnn.write_to_log(day)
     messagebox.showinfo("Message", day+"Ok!")
 
+   
 
 def init_menu(top):
     '''initialize Menu'''
@@ -467,7 +473,7 @@ def init_menu(top):
     reportmenu = Menu(menubar, tearoff=0)
     reportmenu.add_command(label="This week summary", command=report_week)
     reportmenu.add_command(label="This week task tracker", command=report_tracker)
-     
+    reportmenu.add_command(label="Get this week file change", command=file_tracker)
     
     menubar.add_cascade(label="Report", menu=reportmenu)
     return menubar
@@ -490,6 +496,15 @@ if __name__ == "__main__":
     td = datetime.datetime(2017,6,23)-datetime.datetime.now()
     StringVars[0].set("毕业还有："+str(td.days))
     Labels[0].grid(row=1, column=0)
+    
+    T = Text(TOP, height=50, width=70)
+    S = Scrollbar(TOP,command=T.yview)    
+    T.grid(row=2, column=0,sticky="nsew")
+    S.grid(row=2, column=1,sticky="nsew")
+    S.config(command=T.yview)
+    T.config(yscrollcommand=S.set)
+    ss = getfilemtime.write_today_work(filelist,CURRENTDAY)
+    T.insert(END , ss)    
     MENUBAR = init_menu(root)
     TOP.pack()
     root.config(menu=MENUBAR)

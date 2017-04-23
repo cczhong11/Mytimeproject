@@ -25,7 +25,7 @@ class Cal(object):
             result = result + newt
         else:
             save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            result = result2 + newt
+            result = result2 + newt[0:len(newt)-1]
 
 
         cu0.execute(save_sql, result)
@@ -171,7 +171,7 @@ class Cal(object):
 
     def report_doing(self, ind, yom=0):
         '''for pie chart with type'''
-        sql = "select type, Detail_type,start_time, end_time from calendar_aim where efficient > 5 "
+        sql = "select type, Deatil_type,start_time, end_time from calendar_aim where efficient > 5 "
         cu0 = self.conn.cursor()
         if yom==2: #for all time
             cu0.execute(sql)
