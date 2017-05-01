@@ -99,6 +99,33 @@ class Report(object):
         d.plot_width = 800
         d.plot_height = 600
         return(d)
+        
+    def where_did_i_spend_time_m(self, cal, ind, yom=1):
+        '''pie chart'''
+        result = cal.report_doing(ind, yom)        
+        result = [get_time_delta(one) for one in result]        
+        df = pd.DataFrame(result, columns=['type', 'detail_type', 'duration'])        
+        source = ColumnDataSource({'type': list(df['type']),'detail_type':list(df['detail_type']), 'duration':list(df['duration'])})       
+        grouped = df.groupby(['type', 'detail_type']).sum()
+        grouped.to_csv("report/report_time_week_"+str(ind)+".csv", encoding='utf-8')
+        d = Donut(data=df, label=['type','detail_type'], values='duration',text_font_size='6pt')
+        d.plot_width = 800
+        d.plot_height = 600
+        return(d)
+    
+    def where_did_i_not_spend_time_m(self, cal, ind, yom=1):
+        '''pie chart'''
+        result = cal.report_ineff_time(ind, yom)     
+        print(result)
+        result = [get_time_delta(one) for one in result]        
+        df = pd.DataFrame(result, columns=['type', 'detail_type', 'duration'])        
+        source = ColumnDataSource({'type': list(df['type']),'detail_type':list(df['detail_type']), 'duration':list(df['duration'])})       
+        grouped = df.groupby(['type', 'detail_type']).sum()
+        grouped.to_csv("report/report_not_time_week_"+str(ind)+".csv", encoding='utf-8')
+        d = Donut(data=df, label=['type','detail_type'], values='duration',text_font_size='6pt')
+        d.plot_width = 800
+        d.plot_height = 600
+        return(d)
 
     def efficient_time(self, cal,ind,yom=0):
         '''dot chart for my inefficient time'''        
@@ -192,7 +219,7 @@ def from_tup_to_list(tup):
     return b
 def test_f():    
     R = Report(Tasklist("new_term"))
-    R.weekly(9)
+    R.where_did_i_not_spend_time_m(Cal(),'2017-4-30')
     #R.weekly_summary(9)
 if __name__ == "__main__":
     test_f()

@@ -3,6 +3,7 @@
 import sqlite3
 import datetime
 from Titem import *
+import calendar
 import os.path
 class Cal(object):
     def __init__(self):
@@ -179,12 +180,42 @@ class Cal(object):
             nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
             nend = nstart + datetime.timedelta(days=6)
             sql = sql + "and start_day >= ? and start_day < ?"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
-            
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            cu0.execute(sql, data)
+        elif yom == 1:
+            nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
+            nend = nstart + datetime.timedelta(days=30)
+            sql = sql + "and start_day >= ? and start_day < ?"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            print(data)
             cu0.execute(sql, data)
         result = cu0.fetchall()
         return result
 
+        
+    def report_ineff_time(self, ind, yom=0,ineff=1):
+        '''for pie chart with type'''
+        if ineff==1:
+            sql = "select type, Deatil_type,start_time, end_time from calendar_aim where efficient < 5 "
+        if ineff==0:
+            sql = "select type, Deatil_type,start_time, end_time from real_calendar where efficient = 10 "
+        cu0 = self.conn.cursor()
+        if yom==2: #for all time
+            cu0.execute(sql)
+        elif yom == 0:
+            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nend = nstart + datetime.timedelta(days=6)
+            sql = sql + "and start_day >= ? and start_day < ? Group BY name Order By count(name)"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            cu0.execute(sql, data)
+        elif yom == 1:
+            nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
+            nend = nstart + datetime.timedelta(days=30)
+            sql = sql + "and start_day >= ? and start_day < ?"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),) 
+            cu0.execute(sql, data)            
+        result = cu0.fetchall()
+        return result
     def report_ineff(self, ind, yom=0,ineff=1):
         '''for pie chart with type'''
         if ineff==1:
@@ -200,6 +231,12 @@ class Cal(object):
             sql = sql + "and start_day >= ? and start_day < ? Group BY name Order By count(name)"     
             data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
             cu0.execute(sql, data)
+        elif yom == 1:
+            nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
+            nend = nstart + datetime.timedelta(days=30)
+            sql = sql + "and start_day >= ? and start_day < ?"     
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),) 
+            cu0.execute(sql, data)            
         result = cu0.fetchall()
         return result
 
@@ -230,6 +267,14 @@ class Cal(object):
             str1 = '{0}, {1}, {2}'.format(tup[0], tup[1], tup[3])
             f.write(str1+"\n")
         f.close()
+
+def add_months(sourcedate,months):
+    '''date util'''
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month/12)
+    month = month % 12 + 1
+    day = min(sourcedate.day, calendar.monthrange(year, month)[1])
+    return datetime.date(year, month, day)
 
 
 if __name__ == '__main__':

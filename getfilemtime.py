@@ -10,16 +10,20 @@ PATH='E:/sync'
 def write_this_week_work(paths,currentday):
     file = str(currentday.isocalendar()[1])+"_file_added.txt"
     f = open("log/"+file,"w+", encoding="utf-8")
-    print("i am here")
+    print(paths)
     for path in paths:
         try:
             for i in os.walk(path):
                 folder = i[0]
-                folder=folder.replace("\\",r"/")
-                #print(folder)
-                if 'git' in folder or 'pycache' in folder or 'vscode' in folder or 'Rproj' in folder:
+                folder=folder.replace("\\",r"/")                
+                keyw = ['git','pycache','vscode','Rproj','wxnote','node_modules']
+                bflag = 0
+                for ii in keyw:
+                    if ii in folder:
+                        bflag = 1
+                        break
+                if bflag==1:
                     continue
-                
                 flag = 0
                 for one in i[2]:
                     filetext = i[0]+'/'+one
@@ -35,7 +39,8 @@ def write_this_week_work(paths,currentday):
                 if flag==1:
                     print('-----------------------------')
                     f.write('-----------------------------\n')
-        except:
+        except Exception as e:
+            
             continue
     f.close()
     
@@ -46,12 +51,17 @@ def write_today_work(paths,currentday):
             for i in os.walk(path):
                 folder = i[0]
                 folder=folder.replace("\\",r"/")
-                #print(folder)
-                if 'git' in folder or 'pycache' in folder or 'vscode' in folder or 'Rproj' in folder:
-                    continue
-                
+                               
+                keyw = ['git','pycache','vscode','Rproj','wxnote','node_modules']
+                bflag = 0
+                for ii in keyw:
+                    if ii in folder:
+                        bflag = 1                        
+                        break
+                if bflag==1:                    
+                    continue                
                 flag = 0
-                for one in i[2]:
+                for one in i[2]:                    
                     filetext = i[0]+'/'+one
                     date = getmdtime(filetext)
                     if date<=currentday and date>=currentday-datetime.timedelta(days=1):            
@@ -68,4 +78,4 @@ def write_today_work(paths,currentday):
         except:
             continue
     return s
-#write_this_week_work(PATH,datetime.datetime.now())
+write_this_week_work([PATH],datetime.datetime.now())
