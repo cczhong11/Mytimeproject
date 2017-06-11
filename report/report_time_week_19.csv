@@ -1,1 +1,16 @@
-""
+type,detail_type,duration
+life,driving,1.0
+life,eating,7.0
+life,english,1.5
+life,health,1.0
+life,notebook,1.0
+life,pragramming,0.5
+life,programming,1.0
+life,reading,1.0
+life,relax,7.5
+life,speaking,0.5
+study,abroad,3.0
+study,english,1.0
+study,graduate,24.5
+work,programming,4.5
+work,reading,1.5
