@@ -1,0 +1,51 @@
+E:/Coding\python\Exercise\mytimeproject
+-----------------------------
+tasks.sqlite
+-----------------------------
+E:/Coding\python\Exercise\mytimeproject\log
+-----------------------------
+31_file_added.txt
+32_file_added.txt
+-----------------------------
+E:/Coding\python\Exercise\mytimeproject\report
+-----------------------------
+report_time_week_31.csv
+report_tracker_31.html
+-----------------------------
+E:/Coding\python\Exercise\mytimeproject\rescuetime
+-----------------------------
+rescue_time.sqlite
+-----------------------------
+E:/Coding\python\Mini
+-----------------------------
+qrcode-gen pass.py
+-----------------------------
+E:/Coding\python\Mini\pic
+-----------------------------
+1.png
+boc.png
+icloud.png
+mi.png
+翻墙.png
+-----------------------------
+E:/Coding\wikidata\人生思考
+-----------------------------
+newmd.py
+简易笔记.md
+-----------------------------
+E:/Coding\wikidata\人生思考\每日总结
+-----------------------------
+20170805slx吃饭事件.md
+20170806过去的故事事件.md
+20170810comcast事件.md
+-----------------------------
+E:/Coding\wikidata\人生记录
+-----------------------------
+2017w31后总结.md
+-----------------------------
+E:/待读
+-----------------------------
+College Writing Skills with Readings.pdf
+Sandra Scarry, John Scarry-The Writer's Workplace with Readings_ Building College Writing Skills  -Cengage Learning (2010).pdf
+《十定律》 .txt
+-----------------------------

@@ -1,7 +1,6 @@
 from __future__ import print_function
 import httplib2
 import os
-import socks
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
@@ -57,8 +56,8 @@ def main():
     10 events on the user's calendar.
     """
     credentials = get_credentials()
-    socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 1080)
-    socks.wrapmodule(httplib2)
+    #socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 1080)
+    #socks.wrapmodule(httplib2)
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
 
