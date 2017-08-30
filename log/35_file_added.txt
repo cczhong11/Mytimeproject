@@ -26,6 +26,9 @@ MS29StudentHandbook.pdf
 /Users/tczhong/Dropbox/2study学习
 -----------------------------
 -----------------------------
+/Users/tczhong/Dropbox/2study学习/14642
+-----------------------------
+-----------------------------
 /Users/tczhong/Dropbox/2study学习/14642/Cheat sheet
 -----------------------------
 QRC0001_UAL.pdf
@@ -33,6 +36,31 @@ QRC0001_UAL.pdf
 /Users/tczhong/Dropbox/2study学习/14642/ppt
 -----------------------------
 28199_179347_18-349-L01-Intro.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/14774
+-----------------------------
+14-774_ManagerialEconomics_SyllabusF17.doc
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/14774/hw
+-----------------------------
+Chap001.doc
+Chap001.pdf
+Chap002.doc
+Chap003.doc
+Exam 2 Review.pptx
+Exam-1 Review.pptx
+Homework Solution Ch1 F11 (1).doc
+Homework solution Ch2 F11 (1).doc
+Homework solution Ch2 F11 (1).pdf
+Homework solution Ch3 F11 (1).doc
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/14774/ppt
+-----------------------------
+28199_114874_Class1_2_Intro_CH1_2.pdf
+28199_114874_Class1_2_Intro_CH1_2.ppt
+Ch4_Ch5.ppt
+Class3_ch3.pdf
+Class3_ch3.ppt
 -----------------------------
 /Users/tczhong/Dropbox/2study学习/15513
 -----------------------------
@@ -46,7 +74,6 @@ submission code.txt
 -----------------------------
 /Users/tczhong/Dropbox/2study学习/15513/lab0/cprogramminglab-handout
 -----------------------------
-driver.py
 queue.c
 queue.h
 -----------------------------
@@ -61,16 +88,6 @@ Stuart Russell, Peter Norvig Artificial Intelligence A Modern Approach.pdf
 /Users/tczhong/Dropbox/2study学习/15681/ppt
 -----------------------------
 intro to AI.pptx
------------------------------
-/Users/tczhong/Dropbox/2study学习/17774
------------------------------
-14-774_ManagerialEconomics_SyllabusF17.doc
------------------------------
-/Users/tczhong/Dropbox/2study学习/17774/ppt
------------------------------
-28199_114874_Class1_2_Intro_CH1_2.pdf
-28199_114874_Class1_2_Intro_CH1_2.ppt
-Class3_ch3.ppt
 -----------------------------
 /Users/tczhong/Dropbox/2study学习/选课
 -----------------------------
@@ -115,10 +132,12 @@ Solution.java
 -----------------------------
 /Users/tczhong/Dropbox/Coding/python/Exercise/mytimeproject
 -----------------------------
+2017-08-30.csv
 getfilemtime.py
 googleapi.py
 my_gui.py
 tasks.sqlite
+tasks.sqlite-journal
 -----------------------------
 /Users/tczhong/Dropbox/Coding/python/Exercise/mytimeproject/log
 -----------------------------
@@ -191,6 +210,7 @@ the+gift+of+imperfection.md
 -----------------------------
 David A. Alhadeff Microeconomics and Human Behavior  .pdf
 Kenneth Roman, Joel Raphaelson-Writing that works_ how to communicate effectively in business, e-mail, letters, memos, presentations, plans, reports, proposals, resumes, speeches-Quill (2000).mobi
+the_c_programming_language_2.pdf
 -----------------------------
 /Users/tczhong/Dropbox/留学
 -----------------------------

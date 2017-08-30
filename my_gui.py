@@ -294,7 +294,7 @@ def add_tomorrow():
     m1 = len(Ann.today)
     date = CURRENTDAY.date()+datetime.timedelta(days=1)
     tits = []
-    for i in range(int(len(Ent)/2)):
+    for i in range(len(Ent)):
         thing = Ent[i].get()
         if len(thing)!=0:
             ntype =''
@@ -330,13 +330,13 @@ def add_tomorrow():
             tit.aim = aim
             tits.append(tit)
     j = 0
-
-    for i in range(int(len(Ent)/2)-1):
+    originlen = len(tits);
+    for i in range(len(tits)-1):
         tit1 = tits[j]
         tit2 = tits[j+1]
         if tit1.combine(tit2):
             tits.remove(tit2)
-            if i == int(len(Ent)/2)-2:
+            if i == originlen-2:
                 Cnn.add_Titems(tit1)
         else:
             j += 1
