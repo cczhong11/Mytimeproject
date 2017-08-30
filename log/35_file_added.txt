@@ -1,0 +1,214 @@
+/Users/tczhong/Dropbox
+-----------------------------
+Icon
+屏幕快照 2017-08-25 上午7.33.23.png
+-----------------------------
+/Users/tczhong/Dropbox/.dropbox.cache/2017-08-28
+-----------------------------
+经验的疆界。md (deleted f5f2eee1931bfb5afa21fe39507ac986)
+-----------------------------
+/Users/tczhong/Dropbox/.dropbox.cache/2017-08-29
+-----------------------------
+28199_176960_L1+-+Intro (deleted e19d907a9b8e286413a640337623151e).pdf
+C The C Programming Language (deleted 4677725ad70e70391906b88521423756).pdf
+-----------------------------
+/Users/tczhong/Dropbox/1life生活
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/1life生活/photo
+-----------------------------
+21083250_10154981537864065_7129688529362662897_o.jpg
+-----------------------------
+/Users/tczhong/Dropbox/1life生活/留学重要材料
+-----------------------------
+MS29StudentHandbook.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/14642/Cheat sheet
+-----------------------------
+QRC0001_UAL.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/14642/ppt
+-----------------------------
+28199_179347_18-349-L01-Intro.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15513
+-----------------------------
+Randal E. Bryant, David R. OHallaron Computer Systems A Programmers Perspective.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15513/lab0
+-----------------------------
+cprogramminglab-handout.tar
+cprogramminglab.pdf
+submission code.txt
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15513/lab0/cprogramminglab-handout
+-----------------------------
+driver.py
+queue.c
+queue.h
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15513/ppt
+-----------------------------
+01-overview.pptx
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15681
+-----------------------------
+Stuart Russell, Peter Norvig Artificial Intelligence A Modern Approach.pdf
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/15681/ppt
+-----------------------------
+intro to AI.pptx
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/17774
+-----------------------------
+14-774_ManagerialEconomics_SyllabusF17.doc
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/17774/ppt
+-----------------------------
+28199_114874_Class1_2_Intro_CH1_2.pdf
+28199_114874_Class1_2_Intro_CH1_2.ppt
+Class3_ch3.ppt
+-----------------------------
+/Users/tczhong/Dropbox/2study学习/选课
+-----------------------------
+Learn With Us - Curriculum _ Carnegie Mellon University - Language Technologies Institute.pdf
+-----------------------------
+/Users/tczhong/Dropbox/3work工作
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/3work工作/career service
+-----------------------------
+Internship Organizer.xlsx
+-----------------------------
+/Users/tczhong/Dropbox/3work工作/me
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/3work工作/me/resume-zh_CN
+-----------------------------
+Tianchen Zhong Resume.aux
+Tianchen Zhong Resume.log
+Tianchen Zhong Resume.out
+Tianchen Zhong Resume.pdf
+Tianchen Zhong Resume.synctex.gz
+Tianchen Zhong Resume.tex
+-----------------------------
+/Users/tczhong/Dropbox/Apps
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/cmu_lesson/csapp
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/cmu_lesson/csapp/code
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/cmu_lesson/csapp/lab
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/Coding/Java/Mini
+-----------------------------
+hello.class
+hello.java
+Solution.java
+-----------------------------
+/Users/tczhong/Dropbox/Coding/python/Exercise/mytimeproject
+-----------------------------
+getfilemtime.py
+googleapi.py
+my_gui.py
+tasks.sqlite
+-----------------------------
+/Users/tczhong/Dropbox/Coding/python/Exercise/mytimeproject/log
+-----------------------------
+34_file_added.txt
+35_file_added.txt
+-----------------------------
+/Users/tczhong/Dropbox/Coding/python/Exercise/mytimeproject/rescuetime
+-----------------------------
+rescue_time.sqlite
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata
+-----------------------------
+index.md
+读书记录.xlsx
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/人生计划
+-----------------------------
+日程安排.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/人生计划/人生伪代码
+-----------------------------
+上课写作业.md
+刷题.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/人生计划/出国能力提升
+-----------------------------
+全局思维观.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/人生记录
+-----------------------------
+2017w31后总结.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/学习心得/coding
+-----------------------------
+cracking the code interview.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/学习心得/个人总结
+-----------------------------
+健康饮食.md
+学习方法.md
+-----------------------------
+/Users/tczhong/Dropbox/Coding/wikidata/读书笔记
+-----------------------------
+10秒钟让自己不同凡响.md
+GEB.md
+the+gift+of+imperfection.md
+一分钟的你自己.md
+专注力.md
+亲密关系.md
+决策的艺术.md
+分解上班族.md
+发现人生定律.md
+大数据和我们.md
+少有人走的路.md
+思维脑图使用手册.md
+思考快与慢.md
+怪诞行为学.md
+断舍离.md
+最重要的事情只有一件.md
+沟通的艺术.md
+男人来自火星，女人来自火星.md
+程序员职业素养.md
+精进.md
+经验的疆界.md
+超实用记忆力训练法.md
+高难度对话.md
+黑客与画家.md
+-----------------------------
+/Users/tczhong/Dropbox/待读
+-----------------------------
+David A. Alhadeff Microeconomics and Human Behavior  .pdf
+Kenneth Roman, Joel Raphaelson-Writing that works_ how to communicate effectively in business, e-mail, letters, memos, presentations, plans, reports, proposals, resumes, speeches-Quill (2000).mobi
+-----------------------------
+/Users/tczhong/Dropbox/留学
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/留学/CMU
+-----------------------------
+MSIN_Track_Sheet.xlsx
+选课清单.xlsx
+-----------------------------
+/Users/tczhong/Dropbox/留学/文书/me
+-----------------------------
+-----------------------------
+/Users/tczhong/Dropbox/留学/文书/me/resume-zh_CN
+-----------------------------
+Tianchen Zhong Resume.aux
+Tianchen Zhong Resume.log
+Tianchen Zhong Resume.out
+Tianchen Zhong Resume.pdf
+Tianchen Zhong Resume.synctex.gz
+Tianchen Zhong Resume.tex
+-----------------------------

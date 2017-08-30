@@ -12,7 +12,8 @@ import getfilemtime
 CURRENTDAY = datetime.datetime.now()
 ssss = 0
 Ann = Tasklist("new_term")
-filelist=['E:/sync','E:/mynutcloud','E:/Coding','E:/待读','E:/毕业设计','E:/留学']
+#filelist=['E:/sync','E:/mynutcloud','E:/Coding','E:/待读','E:/毕业设计','E:/留学']
+filelist=['/Users/tczhong/Dropbox']
 def destory_all(frame0):
     '''destory all widget'''
     for widget in frame0.winfo_children():
@@ -258,7 +259,7 @@ def assign_tomorrow():
     m1 = i
     i = 0
     for itime in range(8, 23):
-        if itime in [8, 12, 18]:
+        if itime in [12, 18]:
             continue
         StringVars.append(StringVar())
         Labels.append(Label(TOP, textvariable=StringVars[m1+i]))
@@ -293,7 +294,7 @@ def add_tomorrow():
     m1 = len(Ann.today)
     date = CURRENTDAY.date()+datetime.timedelta(days=1)
     tits = []
-    for i in range(24):
+    for i in range(int(len(Ent)/2)):
         thing = Ent[i].get()
         if len(thing)!=0:
             ntype =''
@@ -329,12 +330,13 @@ def add_tomorrow():
             tit.aim = aim
             tits.append(tit)
     j = 0
-    for i in range(23):
+
+    for i in range(int(len(Ent)/2)-1):
         tit1 = tits[j]
         tit2 = tits[j+1]
         if tit1.combine(tit2):
             tits.remove(tit2)
-            if i == 22:
+            if i == int(len(Ent)/2)-2:
                 Cnn.add_Titems(tit1)
         else:
             j += 1
@@ -488,14 +490,14 @@ def switch_t():
 
 if __name__ == "__main__":
     root = tkinter.Tk()
-    root.geometry('800x600+100+0')
+    root.geometry('800x800+100+0')
     TOP = Frame(root)
     Labels = []
     StringVars = []
     StringVars.append(StringVar())
     Labels.append(Label(TOP, textvariable=StringVars[0]))
-    td = datetime.datetime(2017,6,23)-datetime.datetime.now()
-    StringVars[0].set("毕业还有："+str(td.days))
+    td = datetime.datetime(2017,10,12)-datetime.datetime.now()
+    StringVars[0].set("mid term："+str(td.days))
     Labels[0].grid(row=1, column=0)
     
     T = Text(TOP, height=50, width=70)
