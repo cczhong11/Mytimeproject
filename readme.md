@@ -1,4 +1,15 @@
 # Calendar and task-list
+## how to use
+### pre-requirement
+1. python 3.5+, recommend just install anaconda
+1. panads, numpy
+1. bokeh
+
+### install
+1. download all the code
+1. run `python my_gui.py`
+
+
 ## Purpose
 The aim of this project is to develop a system that can combine calendar and to-do lists, with some log and analysis function.
 
@@ -28,9 +39,9 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 ## To-do function
 
 * [ ] 统计各个任务，各个type完成的时间图表，可以按月，周。连胜次数之类的
-* [ ] 在日历中显示已有的数据，可以修改，而不是每次都是初始值
+* [x] 在日历中显示已有的数据，可以修改，而不是每次都是初始值
 * [ ] 人生金字塔以及每周的努力
-* [ ] 显示已有的事件，自动匹配类型
+* [x] 显示已有的事件，自动匹配类型
 * [x] 今日完成加入activity选择
 * [x] rescue time summary
 * [ ] cal add this task aim!
