@@ -10,7 +10,7 @@ PATH='/Users/tczhong/Dropbox'
 def write_this_week_work(paths,currentday):
     file = str(currentday.isocalendar()[1])+"_file_added.txt"
     f = open("log/"+file,"w+", encoding="utf-8")
-    print(paths)
+    #print(paths)
     for path in paths:
         try:
             for i in os.walk(path):
@@ -30,12 +30,12 @@ def write_this_week_work(paths,currentday):
                     date = getmdtime(filetext)
                     if date<=datetime.datetime.now() and date>=currentday-datetime.timedelta(days=7):            
                         if flag==0:
-                            print(i[0]+'\n-----------------------------')
+                            #print(i[0]+'\n-----------------------------')
                             f.write(i[0]+'\n-----------------------------\n')
                             flag =1
                         if '.DS_Store' in one:
                             continue
-                        print(one)
+                        #print(one)
                         f.write(one+'\n')
                     
                 if flag==1:
@@ -68,16 +68,16 @@ def write_today_work(paths,currentday):
                     date = getmdtime(filetext)
                     if date<=currentday and date>=currentday-datetime.timedelta(days=1):            
                         if flag==0:
-                            print(i[0]+'\n-----------------------------')
+                            #print(i[0]+'\n-----------------------------')
                             s=s+i[0]+'\n-----------------------------\n'
                             flag =1
-                        print(one)
+                        #print(one)
                         if '.DS_Store' in one:
                             continue
                         s=s+one+'\n'
                     
                 if flag==1:
-                    print('-----------------------------')
+                    #print('-----------------------------')
                     s=s+'-----------------------------\n\n'
         except:
             continue

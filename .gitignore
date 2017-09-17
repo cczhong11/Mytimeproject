@@ -2,3 +2,6 @@ log/*.csv
 log/*.txt
 *.sqlite
 report/*.html
+report/report_not_time_week_2017-4-30.csv
+report/*.csv
+*.csv
