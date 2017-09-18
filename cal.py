@@ -252,6 +252,28 @@ class Cal(object):
             f.write(str1+"\n")
         f.close()
 
+    def update_to_g(self, day0):
+        '''write 2 csv file'''
+        #file = day0+".csv"
+        self.add_all_Titems(day0)
+        #f = open(file,"w+", encoding="utf-8")
+        #f.write("Subject, Start Date, Start Time, End Date, End Time\n")
+        #credentials = get_credentials()
+        #http = credentials.authorize(httplib2.Http())
+        #service = discovery.build('calendar', 'v3', http=http)
+        
+        for one in self.Titems:
+            body = {}
+            tup = one.get_all()            
+            body["summary"]=tup[0]
+            body["start"]={}
+            body["start"]["dateTime"]= tup[1]+"T"+tup[3]+"-04:00:00"
+            body["end"]["dateTime"]= tup[2]+"T"+tup[4]+"-04:00:00"
+            #str1 = '{0}, {1}, {2}, {3}, {4}'.format(str(tup[0])+' '+str(tup[8]), tup[1], tup[3], tup[2], tup[4])
+            
+            f.write(str1+"\n")
+        f.close()
+
     def write_to_log(self, day0):
         '''write 2 csv log file'''
         file = str(datetime.datetime.strptime(day0, "%Y-%M-%d").isocalendar()[1])+"_log.csv"
@@ -279,10 +301,10 @@ def add_months(sourcedate,months):
 
 if __name__ == '__main__':
     AA = Cal()
-    newday = datetime.datetime.now().date()+datetime.timedelta(days=1)
+    ##newday = datetime.datetime.now().date()+datetime.timedelta(days=1)
     #AA.add_all_Titems("2017-01-25")    
     #AA.print_all()
     #AA.creat_new_day(newday)
     #AA.write_to_csv("2017-01-26")
-    AA.fetch_activity()
-    print(AA.activities)
+    ##AA.fetch_activity()
+    ##print(AA.activities)

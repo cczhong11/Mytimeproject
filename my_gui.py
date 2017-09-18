@@ -9,6 +9,7 @@ from Titem import *
 from tkinter import messagebox
 from report import Report
 import getfilemtime
+from googleapi import update_g_c
 CURRENTDAY = datetime.datetime.now()
 ssss = 0
 Ann = Tasklist("new_term")
@@ -438,7 +439,11 @@ def export_to_log():
     Cnn.write_to_log(day)
     messagebox.showinfo("Message", day+"Ok!")
 
-   
+def google_sync():
+    date = CURRENTDAY.date()+datetime.timedelta(days=1)
+    day = date.strftime("%Y-%m-%d")
+    update_g_c(Cnn,day)
+    messagebox.showinfo("Message",day+" Done!")
 
 def init_menu(top):
     '''initialize Menu'''
@@ -447,7 +452,7 @@ def init_menu(top):
     filemenu.add_command(label="Import from csv for tasks", command=donothing)
     filemenu.add_command(label="Import from csv for calendar", command=donothing)
     filemenu.add_command(label="Sync your tasks", command=donothing)
-    filemenu.add_command(label="Sync your calendar", command=donothing)
+    filemenu.add_command(label="Sync your calendar", command=google_sync)
     filemenu.add_command(label="Export csv for logs", command=export_to_log)
     filemenu.add_command(label="Export csv for calendar", command=export_to_csv)
     filemenu.add_separator()
