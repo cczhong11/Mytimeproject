@@ -6,7 +6,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "/anaconda/bin",
+            "pythonPath": "/anaconda/bin/python",
             "program": "${file}",
             "cwd": "${workspaceRoot}",
             "debugOptions": [

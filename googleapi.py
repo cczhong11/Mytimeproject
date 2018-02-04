@@ -44,27 +44,29 @@ def get_credentials():
         flow.user_agent = APPLICATION_NAME
         if flags:
             credentials = tools.run_flow(flow, store, flags)
-        else: # Needed only for compatibility with Python 2.6
+        else:  # Needed only for compatibility with Python 2.6
             credentials = tools.run(flow, store)
         print('Storing credentials to ' + credential_path)
     return credentials
 
-def update_g_c(Cnn,day0):
+
+def update_g_c(Cnn, day0):
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
     Cnn.add_all_Titems(day0)
     for one in Cnn.Titems:
         body = {}
-        tup = one.get_all()            
-        body["summary"]=tup[0]
-        #print(tup[0])
-        body["start"]={}
-        body["start"]["dateTime"]= tup[1]+"T"+tup[3]+"-04:00:00"
-        body["end"]={}
-        body["end"]["dateTime"]= tup[2]+"T"+tup[4]+"-04:00:00"
-        service.events().insert(calendarId='bloafkanpa3ud3k8dlqnq3qhdc@group.calendar.google.com',body=body).execute()
- 
+        tup = one.get_all()
+        body["summary"] = tup[0] + " " + tup[8]
+        # print(tup[0])
+        body["start"] = {}
+        body["start"]["dateTime"] = tup[1] + "T" + tup[3] + "-05:00:00"
+        body["end"] = {}
+        body["end"]["dateTime"] = tup[2] + "T" + tup[4] + "-05:00:00"
+        service.events().insert(
+            calendarId='bloafkanpa3ud3k8dlqnq3qhdc@group.calendar.google.com', body=body).execute()
+
 
 def main():
     """Shows basic usage of the Google Calendar API.
@@ -73,30 +75,18 @@ def main():
     10 events on the user's calendar.
     """
     credentials = get_credentials()
-    #socks.setdefaultproxy(socks.PROXY_TYPE_SOCKS5, '127.0.0.1', 1080)
-    #socks.wrapmodule(httplib2)
+
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
     s = service.calendarList().list().execute()
-    #print(s)
-    
-    body = {"summary": "test","start":{"dateTime":"2017-09-18T14:00:00-04:00:00"},\
-    "end":{"dateTime":"2017-09-18T15:00:00-04:00:00"}}
-    #now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    #print('Getting the upcoming 10 events')
-    #eventsResult = service.events().list(
-    #    calendarId='primary', timeMin=now, maxResults=10, singleEvents=True,
-    #    orderBy='startTime').execute()
-    #events = eventsResult.get('items', [])
-    #if not events:
-    #    print('No upcoming events found.')
-    #for event in events:
-    #    start = event['start'].get('dateTime', event['start'].get('date'))
-    #    print(start, event['summary'])
-    service.events().insert(calendarId='bloafkanpa3ud3k8dlqnq3qhdc@group.calendar.google.com',body=body).execute()
-    
+
+    body = {"summary": "test", "start": {"dateTime": "2017-09-18T14:00:00-04:00:00"},
+            "end": {"dateTime": "2017-09-18T15:00:00-04:00:00"}}
+
+    service.events().insert(
+        calendarId='bloafkanpa3ud3k8dlqnq3qhdc@group.calendar.google.com', body=body).execute()
+
 
 if __name__ == '__main__':
     Cnn = Cal()
-    update_g_c(Cnn,"2017-09-18")
-    #main()
+    update_g_c(Cnn, "2017-09-18")

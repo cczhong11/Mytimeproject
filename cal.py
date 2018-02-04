@@ -5,6 +5,8 @@ import datetime
 from Titem import *
 import calendar
 import os.path
+
+
 class Cal(object):
     def __init__(self):
         self.Titems = []
@@ -13,12 +15,11 @@ class Cal(object):
         self.conn = sqlite3.connect('tasks.sqlite')
         self.create_table_sql()
 
-
-    def add_Titems(self, titem,real=0):
+    def add_Titems(self, titem, real=0):
         '''insert a item to sql'''
-        
+
         newt = titem.get_all()
-        cu0 =  self.conn.cursor()
+        cu0 = self.conn.cursor()
         result = (self.find_max_id(),)
         result2 = (self.find_max_id(1),)
         if real == 0:
@@ -26,14 +27,13 @@ class Cal(object):
             result = result + newt
         else:
             save_sql = "INSERT INTO real_calendar values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
-            result = result2 + newt[0:len(newt)-1]
-
+            result = result2 + newt[0:len(newt) - 1]
 
         cu0.execute(save_sql, result)
         self.conn.commit()
         cu0.close()
 
-    def find_max_id(self,real=0):
+    def find_max_id(self, real=0):
         '''get max id in two different table'''
         cu0 = self.conn.cursor()
         if real == 0:
@@ -46,7 +46,7 @@ class Cal(object):
         except:
             result = -1
         cu0.close()
-        return result+1
+        return result + 1
 
     def fetch_cal_id(self, titem):
         '''get cal_id'''
@@ -58,10 +58,10 @@ class Cal(object):
         result = cu0.fetchone()
         return result
 
-    def update_efficience(self, titem, eff,real_titem=-1):
+    def update_efficience(self, titem, eff, real_titem=-1):
         '''update cal'''
         update_sql = "UPDATE calendar_aim SET efficient = ? WHERE cal_id = ?"
-        
+
         data = (eff, self.fetch_cal_id(titem)[0])
         if real_titem != -1:
             self.add_Titems(real_titem, 1)
@@ -109,21 +109,20 @@ class Cal(object):
         self.conn.commit()
         cu.close()
 
-
-    def creat_new_day(self,day):
+    def creat_new_day(self, day):
         '''create a day'''
         Y = day.year
         M = day.month
         D = day.day
-        for i in range(8,23):
-            thing1 = input(str(i)+":00 : ")
-            thing2 = input(str(i)+":30 : ")
+        for i in range(8, 23):
+            thing1 = input(str(i) + ":00 : ")
+            thing2 = input(str(i) + ":30 : ")
             tit1 = Titem(thing1)
             tit2 = Titem(thing2)
             tit1.start_time = datetime.datetime(Y, M, D, i, 0, 0)
             tit1.end_time = datetime.datetime(Y, M, D, i, 30, 0)
             tit2.start_time = datetime.datetime(Y, M, D, i, 30, 0)
-            tit2.end_time = datetime.datetime(Y, M, D, i+1, 0, 0)
+            tit2.end_time = datetime.datetime(Y, M, D, i + 1, 0, 0)
             self.add_Titems(tit1)
             if tit1.get_name() == tit2.get_name():
                 tit1.combine(tit2)
@@ -144,10 +143,9 @@ class Cal(object):
         '''add new activity'''
         sql = "INSERT INTO activity values (?, ?, ?)"
         cu0 = self.conn.cursor()
-        cu0.execute(sql,(name,type0, detail_type,))
+        cu0.execute(sql, (name, type0, detail_type,))
         self.conn.commit()
         cu0.close()
-
 
     def add_all_Titems(self, day0):
         '''add all to '''
@@ -165,7 +163,8 @@ class Cal(object):
         '''print all'''
         print("--------------------")
         for one in self.Titems:
-            print("%s-%s %s"%(one.start_time.strftime("%H:%M"), one.end_time.strftime("%H:%M"), one.get_name()))
+            print("%s-%s %s" % (one.start_time.strftime("%H:%M"),
+                                one.end_time.strftime("%H:%M"), one.get_name()))
             eff = input("efficient?")
             self.update_efficience(one, eff)
         print("---------------------")
@@ -174,82 +173,89 @@ class Cal(object):
         '''for pie chart with type'''
         sql = "select type, Deatil_type,start_time, end_time from calendar_aim where efficient > 5 "
         cu0 = self.conn.cursor()
-        if yom==2: #for all time
+        if yom == 2:  # for all time
             cu0.execute(sql)
         elif yom == 0:
-            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nstart = datetime.date(2018, 1, 1) + \
+                datetime.timedelta(days=7 * (ind - 1))
             nend = nstart + datetime.timedelta(days=6)
-            sql = sql + "and start_day >= ? and start_day < ?"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            sql = sql + "and start_day >= ? and start_day < ?"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
             cu0.execute(sql, data)
         elif yom == 1:
             nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
             nend = nstart + datetime.timedelta(days=30)
-            sql = sql + "and start_day >= ? and start_day < ?"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            sql = sql + "and start_day >= ? and start_day < ?"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
             print(data)
             cu0.execute(sql, data)
         result = cu0.fetchall()
         return result
 
-        
-    def report_ineff_time(self, ind, yom=0,ineff=1):
+    def report_ineff_time(self, ind, yom=0, ineff=1):
         '''for pie chart with type'''
-        if ineff==1:
+        if ineff == 1:
             sql = "select type, Deatil_type,start_time, end_time from calendar_aim where efficient < 5 "
-        if ineff==0:
+        if ineff == 0:
             sql = "select type, Deatil_type,start_time, end_time from real_calendar where efficient = 10 "
         cu0 = self.conn.cursor()
-        if yom==2: #for all time
+        if yom == 2:  # for all time
             cu0.execute(sql)
         elif yom == 0:
-            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nstart = datetime.date(2018, 1, 1) + \
+                datetime.timedelta(days=7 * (ind - 1))
             nend = nstart + datetime.timedelta(days=6)
-            sql = sql + "and start_day >= ? and start_day < ? Group BY name Order By count(name)"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            sql = sql + \
+                "and start_day >= ? and start_day < ? Group BY name Order By count(name)"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
             cu0.execute(sql, data)
         elif yom == 1:
             nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
             nend = nstart + datetime.timedelta(days=30)
-            sql = sql + "and start_day >= ? and start_day < ?"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),) 
-            cu0.execute(sql, data)            
+            sql = sql + "and start_day >= ? and start_day < ?"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
+            cu0.execute(sql, data)
         result = cu0.fetchall()
         return result
-    def report_ineff(self, ind, yom=0,ineff=1):
+
+    def report_ineff(self, ind, yom=0, ineff=1):
         '''for pie chart with type'''
-        if ineff==1:
+        if ineff == 1:
             sql = "select name, count(name) from calendar_aim where efficient < 5 "
-        if ineff==0:
+        if ineff == 0:
             sql = "select name, count(name) from real_calendar where efficient = 10 "
         cu0 = self.conn.cursor()
-        if yom==2: #for all time
+        if yom == 2:  # for all time
             cu0.execute(sql)
         elif yom == 0:
-            nstart = datetime.date(2017, 1, 2) + datetime.timedelta(days=7*(ind-1))
+            nstart = datetime.date(2018, 1, 1) + \
+                datetime.timedelta(days=7 * (ind - 1))
             nend = nstart + datetime.timedelta(days=6)
-            sql = sql + "and start_day >= ? and start_day < ? Group BY name Order By count(name)"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)            
+            sql = sql + \
+                "and start_day >= ? and start_day < ? Group BY name Order By count(name)"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
             cu0.execute(sql, data)
         elif yom == 1:
             nstart = add_months(datetime.datetime.strptime(ind, "%Y-%M-%d"), 2)
             nend = nstart + datetime.timedelta(days=30)
-            sql = sql + "and start_day >= ? and start_day < ?"     
-            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),) 
-            cu0.execute(sql, data)            
+            sql = sql + "and start_day >= ? and start_day < ?"
+            data = (nstart.strftime('%Y-%m-%d'), nend.strftime('%Y-%m-%d'),)
+            cu0.execute(sql, data)
         result = cu0.fetchall()
+        # print(sql)
         return result
 
     def write_to_csv(self, day0):
         '''write 2 csv file'''
-        file = day0+".csv"
+        file = day0 + ".csv"
         self.add_all_Titems(day0)
-        f = open(file,"w+", encoding="utf-8")
+        f = open(file, "w+", encoding="utf-8")
         f.write("Subject, Start Date, Start Time, End Date, End Time\n")
         for one in self.Titems:
-            tup = one.get_all()            
-            str1 = '{0}, {1}, {2}, {3}, {4}'.format(str(tup[0])+' '+str(tup[8]), tup[1], tup[3], tup[2], tup[4])
-            f.write(str1+"\n")
+            tup = one.get_all()
+            str1 = '{0}, {1}, {2}, {3}, {4}'.format(
+                str(tup[0]) + ' ' + str(tup[8]), tup[1], tup[3], tup[2], tup[4])
+            f.write(str1 + "\n")
         f.close()
 
     def update_to_g(self, day0):
@@ -261,39 +267,41 @@ class Cal(object):
         #credentials = get_credentials()
         #http = credentials.authorize(httplib2.Http())
         #service = discovery.build('calendar', 'v3', http=http)
-        
+
         for one in self.Titems:
             body = {}
-            tup = one.get_all()            
-            body["summary"]=tup[0]
-            body["start"]={}
-            body["start"]["dateTime"]= tup[1]+"T"+tup[3]+"-04:00:00"
-            body["end"]["dateTime"]= tup[2]+"T"+tup[4]+"-04:00:00"
+            tup = one.get_all()
+            body["summary"] = tup[0]
+            body["start"] = {}
+            body["start"]["dateTime"] = tup[1] + "T" + tup[3] + "-04:00:00"
+            body["end"]["dateTime"] = tup[2] + "T" + tup[4] + "-04:00:00"
             #str1 = '{0}, {1}, {2}, {3}, {4}'.format(str(tup[0])+' '+str(tup[8]), tup[1], tup[3], tup[2], tup[4])
-            
-            f.write(str1+"\n")
+
+            f.write(str1 + "\n")
         f.close()
 
     def write_to_log(self, day0):
         '''write 2 csv log file'''
-        file = str(datetime.datetime.strptime(day0, "%Y-%M-%d").isocalendar()[1])+"_log.csv"
+        file = str(datetime.datetime.strptime(
+            day0, "%Y-%M-%d").isocalendar()[1]) + "_log.csv"
         self.add_all_Titems(day0)
-        
-        if os.path.isfile("log/"+file):
-            f = open("log/"+file,"a+", encoding="utf-8")
+
+        if os.path.isfile("log/" + file):
+            f = open("log/" + file, "a+", encoding="utf-8")
         else:
-            f = open("log/"+file,"w+", encoding="utf-8")
+            f = open("log/" + file, "w+", encoding="utf-8")
             f.write("Subject, Start Date, Start Time, Aim, Finished result \n")
         for one in self.Titems:
             tup = one.get_all()
             str1 = '{0}, {1}, {2}'.format(tup[0], tup[1], tup[3])
-            f.write(str1+"\n")
+            f.write(str1 + "\n")
         f.close()
 
-def add_months(sourcedate,months):
+
+def add_months(sourcedate, months):
     '''date util'''
     month = sourcedate.month - 1 + months
-    year = int(sourcedate.year + month/12)
+    year = int(sourcedate.year + month / 12)
     month = month % 12 + 1
     day = min(sourcedate.day, calendar.monthrange(year, month)[1])
     return datetime.date(year, month, day)
@@ -302,9 +310,9 @@ def add_months(sourcedate,months):
 if __name__ == '__main__':
     AA = Cal()
     ##newday = datetime.datetime.now().date()+datetime.timedelta(days=1)
-    #AA.add_all_Titems("2017-01-25")    
-    #AA.print_all()
-    #AA.creat_new_day(newday)
-    #AA.write_to_csv("2017-01-26")
-    ##AA.fetch_activity()
-    ##print(AA.activities)
+    # AA.add_all_Titems("2017-01-25")
+    # AA.print_all()
+    # AA.creat_new_day(newday)
+    # AA.write_to_csv("2017-01-26")
+    # AA.fetch_activity()
+    # print(AA.activities)
