@@ -7,3 +7,4 @@ report/*.csv
 *.csv
 *.json
 *.pyc
+*.sqlite

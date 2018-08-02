@@ -61,9 +61,9 @@ def update_g_c(Cnn, day0):
         body["summary"] = tup[0] + " " + tup[8]
         # print(tup[0])
         body["start"] = {}
-        body["start"]["dateTime"] = tup[1] + "T" + tup[3] + "-05:00:00"
+        body["start"]["dateTime"] = tup[1] + "T" + tup[3] + "-04:00:00"
         body["end"] = {}
-        body["end"]["dateTime"] = tup[2] + "T" + tup[4] + "-05:00:00"
+        body["end"]["dateTime"] = tup[2] + "T" + tup[4] + "-04:00:00"
         service.events().insert(
             calendarId='bloafkanpa3ud3k8dlqnq3qhdc@group.calendar.google.com', body=body).execute()
 

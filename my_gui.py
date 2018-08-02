@@ -540,7 +540,7 @@ if __name__ == "__main__":
     StringVars = []
     StringVars.append(StringVar())
     Labels.append(Label(TOP, textvariable=StringVars[0]))
-    td = datetime.datetime(2018, 3, 3) - datetime.datetime.now()
+    td = datetime.datetime(2018, 5, 11) - datetime.datetime.now()
     StringVars[0].set("mid ：" + str(td.days))
     Labels[0].grid(row=1, column=0)
 
