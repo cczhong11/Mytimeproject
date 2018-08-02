@@ -26,15 +26,17 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 - Export tomorrow calendar as csv file and user can upload it to google calendar
 
 ### v 0.6 
+
  - Now I can set calendar item type by using detail type;
  - Type intergration is done for future summary part
 
 ### v 0.7 
-2017/2/28
+
  - basic report 
  - already_time is str therefore it could record more precisely
 
 ### v 0.9
+
  - see file add in this week
  - add % as aim indicator in the calendar assign
 
