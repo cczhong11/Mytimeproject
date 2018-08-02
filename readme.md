@@ -1,5 +1,6 @@
 # Calendar and task-list
 ## how to use
+
 ### pre-requirement
 1. python 3.5+, recommend just install anaconda
 1. panads, numpy
@@ -17,6 +18,7 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 
 ## Function
 ### v 0.5
+
 - Add new tasks with deadline, type, repeated time, pripority, urgent.
 - See my tasks from different aspects and help me to arrange my life
 - Arrage daily life to do from today to-do lists in the calendar
@@ -27,12 +29,12 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
  - Now I can set calendar item type by using detail type;
  - Type intergration is done for future summary part
 
-## v 0.7 
+### v 0.7 
 2017/2/28
  - basic report 
  - already_time is str therefore it could record more precisely
 
-## v 0.9
+### v 0.9
  - see file add in this week
  - add % as aim indicator in the calendar assign
 
@@ -48,6 +50,7 @@ I usually used task-list and Calendar separaterly, but it is not conveniennt. If
 
 
 ### report arragement
+
 1. what have i done in the last week/month (bar chart)
 2. where do i spend my time (pie chart with type)
 3. when is my most distracted time and effient time? (bar chart)

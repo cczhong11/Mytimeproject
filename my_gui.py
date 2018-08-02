@@ -1,19 +1,19 @@
 '''for gui'''
 import tkinter
-from Tasklist import Tasklist
-from Task import Task
+from src.Tasklist import Tasklist
+from src.Task import Task
 from tkinter import *
-from cal import Cal
+from src.cal import Cal
 import datetime
-from Titem import *
+from src.Titem import *
 from tkinter import messagebox
-from report import Report
-import getfilemtime
-from googleapi import update_g_c
+from src.report import Report
+import src.getfilemtime
+from src.googleapi import update_g_c
+
 CURRENTDAY = datetime.datetime.now()
 ssss = 0
 Ann = Tasklist("new_term")
-# filelist=['E:/sync','E:/mynutcloud','E:/Coding','E:/待读','E:/毕业设计','E:/留学']
 filelist = ['/Users/tczhong/Dropbox']
 
 
@@ -449,7 +449,7 @@ def report_tracker():
 
 def file_tracker():
     global CURRENTDAY
-    getfilemtime.write_this_week_work(filelist, CURRENTDAY)
+    src.getfilemtime.write_this_week_work(filelist, CURRENTDAY)
 
 
 def export_to_csv():
@@ -550,7 +550,7 @@ if __name__ == "__main__":
     S.grid(row=2, column=1, sticky="nsew")
     S.config(command=T.yview)
     T.config(yscrollcommand=S.set)
-    ss = getfilemtime.write_today_work(filelist, CURRENTDAY)
+    ss = src.getfilemtime.write_today_work(filelist, CURRENTDAY)
     T.insert(END, ss)
     MENUBAR = init_menu(root)
     TOP.pack()

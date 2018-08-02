@@ -4,12 +4,12 @@ from bokeh.plotting import figure
 from bokeh.charts import Donut
 from bokeh.models import HoverTool, ColumnDataSource
 from bokeh.layouts import layout, column
-from Tasklist import *
-from cal import Cal
+from .Tasklist import *
+from .cal import Cal
 import datetime
 import pandas as pd
 import numpy as np
-from rescuetime import *
+from .rescuetime import *
 
 
 class Report(object):

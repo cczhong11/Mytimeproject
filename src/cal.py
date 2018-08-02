@@ -2,7 +2,7 @@
 #/usr/bin/python3
 import sqlite3
 import datetime
-from Titem import *
+from .Titem import *
 import calendar
 import os.path
 

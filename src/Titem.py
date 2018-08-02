@@ -1,7 +1,7 @@
 '''time item class'''
-from Thing import Thing
+from .Thing import Thing
 import datetime
-from Task import Task
+from .Task import Task
 import copy
 
 class Titem(Thing):

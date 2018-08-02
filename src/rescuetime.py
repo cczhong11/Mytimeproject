@@ -6,12 +6,13 @@ import sqlite3
 import csv
 from decimal import *
 getcontext().prec = 3
-apikey = 'B639kTMYdfFanKzSRlarPeLnKgR1zt_4ZkuHRbDS'
-conn = sqlite3.connect('rescuetime/rescue_time.sqlite')
-samsung_api='B63UW63A9a_O6fCEOfzMxAd0Gl2ANxChWZ082NKg'
-index = ['id','date','productivity_pulse','very_productive_percentage','productive_percentage','neutral_percentage','distracting_percentage','very_distracting_percentage','all_productive_percentage','all_distracting_percentage','uncategorized_percentage','business_percentage','communication_and_scheduling_percentage','social_networking_percentage','design_and_composition_percentage','entertainment_percentage','news_percentage','software_development_percentage','reference_and_learning_percentage','shopping_percentage','utilities_percentage','total_hours','very_productive_hours','productive_hours','neutral_hours','distracting_hours','very_distracting_hours','all_productive_hours','all_distracting_hours','uncategorized_hours','business_hours','communication_and_scheduling_hours','social_networking_hours','design_and_composition_hours','entertainment_hours','news_hours','software_development_hours','reference_and_learning_hours','shopping_hours','utilities_hours','total_duration_formatted','very_productive_duration_formatted','productive_duration_formatted','neutral_duration_formatted','distracting_duration_formatted','very_distracting_duration_formatted','all_productive_duration_formatted','all_distracting_duration_formatted','uncategorized_duration_formatted','business_duration_formatted','communication_and_scheduling_duration_formatted','social_networking_duration_formatted','design_and_composition_duration_formatted','entertainment_duration_formatted','news_duration_formatted','software_development_duration_formatted','reference_and_learning_duration_formatted','shopping_duration_formatted','utilities_duration_formatted']
+
 def init():
     '''build sqlite'''
+    apikey = 'B639kTMYdfFanKzSRlarPeLnKgR1zt_4ZkuHRbDS'
+    conn = sqlite3.connect('rescuetime/rescue_time.sqlite')
+    samsung_api='B63UW63A9a_O6fCEOfzMxAd0Gl2ANxChWZ082NKg'
+    index = ['id','date','productivity_pulse','very_productive_percentage','productive_percentage','neutral_percentage','distracting_percentage','very_distracting_percentage','all_productive_percentage','all_distracting_percentage','uncategorized_percentage','business_percentage','communication_and_scheduling_percentage','social_networking_percentage','design_and_composition_percentage','entertainment_percentage','news_percentage','software_development_percentage','reference_and_learning_percentage','shopping_percentage','utilities_percentage','total_hours','very_productive_hours','productive_hours','neutral_hours','distracting_hours','very_distracting_hours','all_productive_hours','all_distracting_hours','uncategorized_hours','business_hours','communication_and_scheduling_hours','social_networking_hours','design_and_composition_hours','entertainment_hours','news_hours','software_development_hours','reference_and_learning_hours','shopping_hours','utilities_hours','total_duration_formatted','very_productive_duration_formatted','productive_duration_formatted','neutral_duration_formatted','distracting_duration_formatted','very_distracting_duration_formatted','all_productive_duration_formatted','all_distracting_duration_formatted','uncategorized_duration_formatted','business_duration_formatted','communication_and_scheduling_duration_formatted','social_networking_duration_formatted','design_and_composition_duration_formatted','entertainment_duration_formatted','news_duration_formatted','software_development_duration_formatted','reference_and_learning_duration_formatted','shopping_duration_formatted','utilities_duration_formatted']
     create_table_sql = "CREATE TABLE IF NOT EXISTS daily_summary( \
                           'id' varchar(20) DEFAULT NULL, \
                           'date' varchar(20) DEFAULT NULL, \
@@ -215,5 +216,6 @@ def fetch_data():
         download_csv(b.strftime("%Y-%m-%d"))
 
 if __name__ == "__main__":
+    
     init()
     fetch_data()

@@ -5,7 +5,7 @@ from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
-from cal import Cal
+from src.cal import Cal
 import datetime
 
 try:

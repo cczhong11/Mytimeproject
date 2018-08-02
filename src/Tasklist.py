@@ -2,7 +2,7 @@
 import sqlite3
 import datetime
 import calendar
-from Task import *
+from .Task import *
 
 
 class Tasklist(object):

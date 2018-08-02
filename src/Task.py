@@ -2,7 +2,7 @@
 """This script prompts a user to enter a message to encode or decode
  3  using a classic Caeser shift substitution (3 letter shift)"""
 import datetime
-from Thing import Thing
+from .Thing import Thing
 
 class Task(Thing):
     '''task class for task item'''
